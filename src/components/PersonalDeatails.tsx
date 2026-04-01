@@ -9,7 +9,7 @@ import { FaCheck } from "react-icons/fa6";
 import { PERSONAL_DETAILS } from "@/mock/arraypersonaldetals";
 import { ADDRESS_FIELDS } from "@/mock/arraypersonaldetals";
 import { BILLING_FIELDS } from "@/mock/arraypersonaldetals";
-import { personalDataschema } from "@/Schema/ConsigneeSchema";
+import { personalDataschema } from "@/Schema/CsbIVSchemaZod";
 
 interface geetingsProps {
   consignor: boolean;

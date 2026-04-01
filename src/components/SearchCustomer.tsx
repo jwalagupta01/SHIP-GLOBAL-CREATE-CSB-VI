@@ -2,10 +2,10 @@ import { PrimaryBtn } from "./Element/PrimaryBtn";
 import { customers } from "@/mock/user";
 import { UserComboBox } from "./Element/PrimaryComboBox";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
+import { SearchCustomerSchema } from "@/Schema/CsbIVSchemaZod";
 
 interface geetingsProps {
   consignee: boolean;
@@ -21,19 +21,6 @@ const SearchCustomer = ({
   setAllData,
 }: geetingsProps) => {
   const [formSubmit, setFormSubmit] = useState<boolean>(false);
-
-  const SearchCustomerSchema = z.object({
-    userId: z
-      .object({
-        first_name: z.string(),
-        last_name: z.string(),
-        phone: z.string(),
-        address: z.string(),
-        document: z.string(),
-      })
-      .nullable()
-      .refine((val) => val !== null, { message: "Please Select Customer" }),
-  });
 
   const SearchCustomer = useForm({
     mode: "onChange",

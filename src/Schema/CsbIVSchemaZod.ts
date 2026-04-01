@@ -1,5 +1,18 @@
 import { z } from "zod";
 
+export const SearchCustomerSchema = z.object({
+  userId: z
+    .object({
+      first_name: z.string(),
+      last_name: z.string(),
+      phone: z.string(),
+      address: z.string(),
+      document: z.string(),
+    })
+    .nullable()
+    .refine((val) => val !== null, { message: "Please Select Customer" }),
+});
+
 export const personalDataschema = z
   .object({
     fname: z.string().nonempty("First name is required"),
