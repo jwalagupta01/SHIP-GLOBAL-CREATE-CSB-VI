@@ -7,6 +7,81 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaCheck } from "react-icons/fa6";
+import { PERSONAL_DETAILS } from "@/mock/arraypersonaldetals";
+import { ADDRESS_FIELDS } from "@/mock/arraypersonaldetals";
+import { BILLING_FIELDS } from "@/mock/arraypersonaldetals";
+
+const personalDataschema = z
+  .object({
+    fname: z.string().nonempty("First name is required"),
+    lname: z.string().nonempty("Last name is required"),
+    mobile: z
+      .string()
+      .min(10, "Invalid phone number")
+      .max(10, "Invalid phone number"),
+    email: z.string().email("Please enter a valid email address"),
+    country: z.string().nonempty("Please select a country"),
+    state: z.string().nonempty("Please select a state"),
+    address1: z.string().nonempty("Address 1 is required"),
+    address2: z.string().nonempty("Address 2 is required"),
+    landMark: z.string().optional(),
+    city: z.string().nonempty("City is required"),
+    pinCode: z.string().nonempty("Pincode is required"),
+    billingCheck: z.boolean(),
+    billing_Country: z.string().optional(),
+    billing_State: z.string().optional(),
+    billing_Address1: z.string().optional(),
+    billing_Address2: z.string().optional(),
+    billing_Landmark: z.string().optional(),
+    billing_City: z.string().optional(),
+    billing_Pincode: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (!data.billingCheck) {
+      if (!data.billing_Country) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Country is required",
+          path: ["billing_Country"],
+        });
+      }
+      if (!data.billing_State) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "State is required",
+          path: ["billing_State"],
+        });
+      }
+      if (!data.billing_Address1) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Address 1 is required",
+          path: ["billing_Address1"],
+        });
+      }
+      if (!data.billing_Address2) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Address 2 is required",
+          path: ["billing_Address2"],
+        });
+      }
+      if (!data.billing_City) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "City is Required",
+          path: ["billing_City"],
+        });
+      }
+      if (!data.billing_Pincode) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "PinCode Is Required",
+          path: ["billing_Pincode"],
+        });
+      }
+    }
+  });
 
 interface geetingsProps {
   consignor: boolean;
@@ -26,42 +101,6 @@ const PersonalDeatails = ({
   const [country, setCountry] = useState<any>([]);
   const [state, setState] = useState<any>([]);
 
-  const personalDataschema = z.object({
-    fname: z.string().nonempty("First name is required"),
-    lname: z.string().nonempty("Last name is required"),
-    mobile: z
-      .string()
-      .min(10, "Invalid phone number")
-      .max(10, "Invalid phone number"),
-    email: z.email().nonempty("Please enter a valid email address"),
-    country: z.string().nonempty("Please select a country"),
-    address1: z.string().nonempty("Address 1 is required"),
-    address2: z.string().nonempty("Address 2 is required"),
-    landMark: z.string().optional(),
-    state: z.string().nonempty("Please select a state"),
-    city: z.string().nonempty("City is required"),
-    pinCode: z.string().nonempty("Pincode is required"),
-    billing_Country: billingCheck
-      ? z.string().optional()
-      : z.string().nonempty("Country is required"),
-    billing_Address1: billingCheck
-      ? z.string().optional()
-      : z.string().nonempty("Address 1 is required"),
-    billing_Address2: billingCheck
-      ? z.string().optional()
-      : z.string().nonempty("Address 2 is required"),
-    billing_Landmark: z.string().optional(),
-    billing_State: billingCheck
-      ? z.string().optional()
-      : z.string().nonempty("State is required"),
-    billing_City: billingCheck
-      ? z.string().optional()
-      : z.string().nonempty("City is required"),
-    billing_Pincode: billingCheck
-      ? z.string().optional()
-      : z.string().nonempty("Pincode is required"),
-  });
-
   const personalDataForm = useForm({
     mode: "onChange",
     resolver: zodResolver(personalDataschema),
@@ -70,6 +109,7 @@ const PersonalDeatails = ({
       state: "",
       billing_Country: "",
       billing_State: "",
+      billingCheck: true,
     },
   });
 
@@ -90,6 +130,7 @@ const PersonalDeatails = ({
     setFormSubmit(false);
   }
 
+  // country call
   useEffect(() => {
     const fetchCountry = async () => {
       try {
@@ -103,10 +144,9 @@ const PersonalDeatails = ({
     };
     fetchCountry();
   }, []);
-
+  // state call
   useEffect(() => {
     if (!watchvalue.country) return;
-
     const fetchState = async () => {
       try {
         const res = await axios.post(
@@ -157,34 +197,17 @@ const PersonalDeatails = ({
           <div>
             <p className="font-semibold">Personal Details</p>
             <div className="grid grid-cols-3 *:w-70 mt-2 gap-y-3">
-              <PrimaryInput
-                placeholder="Enter First Name ..."
-                label="First Name"
-                type="text"
-                name="fname"
-                form={personalDataForm}
-              />
-              <PrimaryInput
-                placeholder="Enter Last Name ..."
-                label="Last Name"
-                type="text"
-                name="lname"
-                form={personalDataForm}
-              />
-              <PrimaryInput
-                placeholder="Enter Mobile Number ..."
-                label="Mobile Number"
-                type="tel"
-                name="mobile"
-                form={personalDataForm}
-              />
-              <PrimaryInput
-                placeholder="Enter Email ..."
-                label="Email Address"
-                type="email"
-                name="email"
-                form={personalDataForm}
-              />
+              {PERSONAL_DETAILS.map((item: any, index: number) => (
+                <PrimaryInput
+                  placeholder={item.placeholder}
+                  label={item.label}
+                  type={item.type}
+                  name={item.name}
+                  form={personalDataForm}
+                  key={index}
+                  isRequired={item.isRequired}
+                />
+              ))}
             </div>
             <p className="font-semibold mt-3">Shipping Address</p>
             <div className="grid grid-cols-3 gap-y-3 *:w-70 mt-2">
@@ -197,27 +220,6 @@ const PersonalDeatails = ({
                 labelKey="country_name"
                 form={personalDataForm}
               />
-              <PrimaryInput
-                placeholder="Enter Address 1 ..."
-                label="Address 1"
-                type="text"
-                name="address1"
-                form={personalDataForm}
-              />
-              <PrimaryInput
-                placeholder="Enter Address 2 ..."
-                label="Address 2"
-                type="text"
-                name="address2"
-                form={personalDataForm}
-              />
-              <PrimaryInput
-                label="Landmark"
-                placeholder="Enter Landmark ..."
-                type="text"
-                name="landMark"
-                form={personalDataForm}
-              />
               <BasicComboBox
                 label="State"
                 list={state}
@@ -227,20 +229,17 @@ const PersonalDeatails = ({
                 labelKey="state_name"
                 form={personalDataForm}
               />
-              <PrimaryInput
-                placeholder="Enter City ..."
-                label="City"
-                type="text"
-                name="city"
-                form={personalDataForm}
-              />
-              <PrimaryInput
-                placeholder="Enter Pincode ..."
-                label="Pincode"
-                type="text"
-                name="pinCode"
-                form={personalDataForm}
-              />
+              {ADDRESS_FIELDS.map((item: any, index: number) => (
+                <PrimaryInput
+                  placeholder={item.placeholder}
+                  label={item.label}
+                  type={item.type}
+                  name={item.name}
+                  form={personalDataForm}
+                  key={index}
+                  isRequired={item.isRequired}
+                />
+              ))}
             </div>
           </div>
           <div className="mt-3 flex items-center *:cursor-pointer">
@@ -248,7 +247,11 @@ const PersonalDeatails = ({
               type="checkbox"
               id="check"
               checked={billingCheck}
-              onChange={() => setBillingCheck((prev) => !prev)}
+              // onChange={() => setBillingCheck((prev) => !prev)}
+              onChange={() => {
+                setBillingCheck(!billingCheck);
+                personalDataForm.setValue("billingCheck", !billingCheck);
+              }}
             />
             <label htmlFor="check" className="ms-2">
               Billing address is same as shipping address
@@ -268,27 +271,6 @@ const PersonalDeatails = ({
                     labelKey="country_name"
                     form={personalDataForm}
                   />
-                  <PrimaryInput
-                    placeholder="Enter Address 1 ..."
-                    label="Address 1"
-                    type="text"
-                    name="billing_Address1"
-                    form={personalDataForm}
-                  />
-                  <PrimaryInput
-                    placeholder="Enter Address 2 ..."
-                    label="Address 2"
-                    type="text"
-                    name="billing_Address2"
-                    form={personalDataForm}
-                  />
-                  <PrimaryInput
-                    label="Landmark"
-                    placeholder="Enter Landmark ..."
-                    type="text"
-                    name="billing_Landmark"
-                    form={personalDataForm}
-                  />
                   <BasicComboBox
                     label="State"
                     list={state}
@@ -298,20 +280,17 @@ const PersonalDeatails = ({
                     labelKey="state_name"
                     form={personalDataForm}
                   />
-                  <PrimaryInput
-                    placeholder="Enter City ..."
-                    label="City"
-                    type="text"
-                    name="billing_City"
-                    form={personalDataForm}
-                  />
-                  <PrimaryInput
-                    placeholder="Enter Pincode ..."
-                    label="Pincode"
-                    type="text"
-                    name="billing_Pincode"
-                    form={personalDataForm}
-                  />
+                  {BILLING_FIELDS.map((item: any, index: number) => (
+                    <PrimaryInput
+                      placeholder={item.placeholder}
+                      label={item.label}
+                      type={item.type}
+                      name={item.name}
+                      form={personalDataForm}
+                      key={index}
+                      isRequired={item.isRequired}
+                    />
+                  ))}
                 </div>
               </div>
             )}

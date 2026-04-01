@@ -7,6 +7,7 @@ interface geetingsProps {
   type: string;
   name: string;
   form: any;
+  isRequired: boolean;
 }
 
 export function PrimaryInput({
@@ -15,6 +16,7 @@ export function PrimaryInput({
   type,
   name,
   form,
+  isRequired,
 }: geetingsProps) {
   const {
     register,
@@ -24,7 +26,7 @@ export function PrimaryInput({
     <Field>
       <FieldLabel htmlFor={name} className="text-sm">
         {label}
-        <span className="text-red-500">*</span>
+        {!isRequired && <span className="text-red-500">*</span>}
       </FieldLabel>
       <Input
         id={name}
