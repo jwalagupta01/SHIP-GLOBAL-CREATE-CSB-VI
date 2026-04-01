@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaCheck } from "react-icons/fa6";
-import { PERSONAL_DETAILS } from "@/mock/arraypersonaldetals";
-import { ADDRESS_FIELDS } from "@/mock/arraypersonaldetals";
-import { BILLING_FIELDS } from "@/mock/arraypersonaldetals";
+import { PERSONAL_DETAILS } from "@/mock/arraypersonaldetails";
+import { ADDRESS_FIELDS } from "@/mock/arraypersonaldetails";
+import { BILLING_FIELDS } from "@/mock/arraypersonaldetails";
 import { personalDataschema } from "@/Schema/CsbIVSchemaZod";
 
 interface geetingsProps {

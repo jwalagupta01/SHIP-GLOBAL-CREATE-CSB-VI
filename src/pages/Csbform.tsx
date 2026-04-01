@@ -3,6 +3,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import SearchCustomer from "@/components/SearchCustomer";
 import PersonalDeatails from "@/components/PersonalDeatails";
 import { useState } from "react";
+import ShipmentInfo from "@/components/ShipmentInfo";
 
 const Csbform = () => {
   const [consignee, setConsignee] = useState<boolean>(true);
@@ -30,13 +31,13 @@ const Csbform = () => {
           setAllData={setAllData}
           consignee={consignee}
         />
-
         <PersonalDeatails
           consignor={consignor}
           setConsignor={setConsignor}
           setAllData={setAllData}
           consignee={consignee}
         />
+        <ShipmentInfo />
       </div>
     </div>
   );
