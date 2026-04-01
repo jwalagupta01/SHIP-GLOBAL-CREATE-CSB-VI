@@ -36,7 +36,10 @@ export const UserComboBox = <T,>({
 
   return (
     <div className="flex flex-col">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>
+        {label}
+        <span className="text-red-500">*</span>
+      </label>
 
       <Controller
         control={control}
