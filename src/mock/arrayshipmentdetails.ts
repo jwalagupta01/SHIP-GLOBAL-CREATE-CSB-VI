@@ -1,18 +1,19 @@
 export const SHIPMENT_DETAILS: any = [
   {
-    name: "IOSS Number",
+    name: "invoice_number",
     label: "Invoice Number",
     placeholder: "Enter Invoice Number ...",
     type: "tel",
   },
   {
-    name: "lname",
+    name: "order_id",
     label: "Order/Reference ID",
     placeholder: "Enter Order/Reference ID ...",
     type: "tel",
+    isRequired: true,
   },
   {
-    name: "IOSS Number",
+    name: "ioss_number",
     label: "IOSS Number",
     placeholder: "Enter IOSS Number ...",
     type: "tel",
@@ -22,31 +23,65 @@ export const SHIPMENT_DETAILS: any = [
 
 export const SHIPMENT_SIZE = [
   {
-    name: "IOSS Number",
+    name: "dead_weight",
     label: "Dead Weight ",
     placeholder: "Eg. 1.25",
     type: "number",
     stxt: "Kg",
   },
   {
-    name: "IOSS Number",
+    name: "pro_length",
     label: "Length ",
     placeholder: "Eg. 10",
     type: "number",
     stxt: "Cm",
   },
   {
-    name: "IOSS Number",
+    name: "pro_breadth",
     label: "Breadth ",
     placeholder: "Eg. 10",
     type: "number",
     stxt: "Cm",
   },
   {
-    name: "IOSS Number",
+    name: "pro_height",
     label: "Height",
     placeholder: "Eg. 10",
     type: "number",
     stxt: "Cm",
+  },
+];
+
+export const SHIPMENT_PRODUCT = [
+  {
+    name: "item_name",
+    label: "Product Name",
+    placeholder: "Enter Product Name",
+    type: "text",
+  },
+  {
+    name: "item_sku",
+    label: "SKU",
+    placeholder: "Enter SKU ...",
+    type: "tel",
+    isRequired: true,
+  },
+  {
+    name: "item_hsn",
+    label: "HSN",
+    placeholder: "Enter HSN ...",
+    type: "tel",
+  },
+  {
+    name: "item_qty",
+    label: "Qty",
+    placeholder: "Enter Qty ...",
+    type: "tel",
+  },
+  {
+    name: "item_unit_price",
+    label: "Unit Price (INR)",
+    placeholder: "Enter Unit Price ...",
+    type: "tel",
   },
 ];

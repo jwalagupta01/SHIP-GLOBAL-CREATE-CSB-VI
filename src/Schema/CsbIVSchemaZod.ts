@@ -84,3 +84,25 @@ export const personalDataschema = z
       }
     }
   });
+
+const ProductSchema = z.object({
+  item_name: z.string().nonempty("Product name is required"),
+  item_sku: z.string().optional(),
+  item_hsn: z.coerce.number().min(8, "HSN must be 8 digits long"),
+  item_qty: z.coerce.number().min(1, "Quantity must not be Zero"),
+  item_unit_price: z.coerce.number().min(1, "Unit Price must not be Zero"),
+  item_igst: z.string().optional(),
+});
+
+export const ShipmentinfoSchema = z.object({
+  invoice_date: z.string(),
+  invoice_currency: z.string().nonempty("Select currency"),
+  invoice_number: z.string().nonempty("Please enter invoice number"),
+  order_id: z.string().optional(),
+  ioss_number: z.string().optional(),
+  dead_weight: z.coerce.number().min(0.001, "Weight must be atleast 0.01 KG"),
+  pro_length: z.coerce.number().min(1, "Length must be atleast 1 cm"),
+  pro_breadth: z.coerce.number().min(1, "Breadth must be atleast 1 cm"),
+  pro_height: z.coerce.number().min(1, "Height must be atleast 1 cm"),
+  products: z.array(ProductSchema).min(1, "At least one product is required"),
+});

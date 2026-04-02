@@ -50,13 +50,22 @@ interface geetingssecondProps {
   label: string;
   stxt: string;
   placeholder: string;
+  form: any;
+  name: string;
 }
 
 export function SecondryInput({
   placeholder,
   stxt,
   label,
+  form,
+  name,
 }: geetingssecondProps) {
+  const {
+    register,
+    formState: { errors },
+  } = form;
+
   return (
     <Field>
       <FieldLabel htmlFor="input-button-group">
@@ -66,6 +75,7 @@ export function SecondryInput({
         <Input
           id="input-button-group"
           placeholder={placeholder}
+          {...register(name)}
           className="h-11 focus-visible:ring-1 focus-visible:border-blue-900 focus-visible:ring-blue-500/30"
         />
         <Button
@@ -76,6 +86,9 @@ export function SecondryInput({
           {stxt}
         </Button>
       </ButtonGroup>
+      {errors[name] && (
+        <span className="text-red-500 text-sm">{errors[name].message}</span>
+      )}
     </Field>
   );
 }

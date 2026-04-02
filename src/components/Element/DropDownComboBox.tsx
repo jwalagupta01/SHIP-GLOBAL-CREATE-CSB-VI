@@ -1,4 +1,6 @@
-"use client";
+import { Controller } from "react-hook-form";
+
+("use client");
 
 import {
   Combobox,
@@ -14,6 +16,8 @@ interface geetingsProps {
   labelKey: string;
   list: any;
   placeholder: string;
+  name: string;
+  form: any;
 }
 
 export function DropDownComboBox({
@@ -21,29 +25,52 @@ export function DropDownComboBox({
   labelKey,
   list,
   placeholder,
+  name,
+  form,
 }: geetingsProps) {
+  const {
+    control,
+    formState: { errors },
+  } = form;
+
   return (
     <div>
       <label htmlFor="">
         Invoice Currency <span className="text-red-500">*</span>
       </label>
-      <Combobox items={list}>
-        <ComboboxInput placeholder={placeholder} className="rounded-md h-11" />
-        <ComboboxContent>
-          <ComboboxEmpty>No items found.</ComboboxEmpty>
-          <ComboboxList>
-            {(item) => (
-              <ComboboxItem
-                key={item[valueKey]}
-                value={item[valueKey]}
-                className="data-highlighted:bg-blue-400/30 cursor-pointer data-highlighted:text-blue-900 **:text-blue-900"
-              >
-                {item[labelKey]}
-              </ComboboxItem>
-            )}
-          </ComboboxList>
-        </ComboboxContent>
-      </Combobox>
+      <Controller
+        control={control}
+        name={name}
+        render={({ field }) => (
+          <Combobox
+            items={list}
+            value={field.value}
+            onValueChange={(val) => field.onChange(val)}
+          >
+            <ComboboxInput
+              placeholder={placeholder}
+              className="rounded-md h-11"
+            />
+            <ComboboxContent>
+              <ComboboxEmpty>No items found.</ComboboxEmpty>
+              <ComboboxList>
+                {(item) => (
+                  <ComboboxItem
+                    key={item[valueKey]}
+                    value={item[valueKey]}
+                    className="data-highlighted:bg-blue-400/30 cursor-pointer data-highlighted:text-blue-900 **:text-blue-900"
+                  >
+                    {item[labelKey]}
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
+        )}
+      />
+      {errors[name] && (
+        <span className="text-red-500 text-xs">{errors[name].message}</span>
+      )}
     </div>
   );
 }
