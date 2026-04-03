@@ -5,12 +5,10 @@ import Csbform from "./pages/Csbform";
 import { Login } from "./components/Login";
 
 const App = () => {
-  const token = localStorage.getItem("token");
-
   return (
     <div className="flex flex-col h-screen w-screen bg-white">
       <NavBar />
-      <div className="flex h-full mt-15 flex-row justify-between">
+      <div className="flex h-screen w-screen flex-row justify-between">
         <Sidebar />
         <Routes>
           <Route path="/" element={<Login />} />

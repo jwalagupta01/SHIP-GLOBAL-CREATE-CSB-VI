@@ -15,7 +15,7 @@ const Csbform = () => {
   }, [alldata]);
 
   return (
-    <div className="border w-full h-full ms-60 px-5 py-3 bg-gray-100">
+    <div className="border w-full h-full ms-60 px-5 py-3 bg-gray-100 overflow-scroll pt-15">
       <div className="">
         <p className="text-3xl font-semibold">Create CSB-IV Order</p>
         <div className="flex items-center gap-x-2 *:text-lg">
