@@ -1,4 +1,5 @@
 import { Controller } from "react-hook-form";
+import { get } from "react-hook-form";
 
 ("use client");
 
@@ -33,6 +34,8 @@ export function DropDownComboBox({
     formState: { errors },
   } = form;
 
+  const error = get(errors, name);
+
   return (
     <div>
       <label htmlFor="">
@@ -46,6 +49,7 @@ export function DropDownComboBox({
             items={list}
             value={field.value}
             onValueChange={(val) => field.onChange(val)}
+            defaultValue={list[0]}
           >
             <ComboboxInput
               placeholder={placeholder}
@@ -68,9 +72,7 @@ export function DropDownComboBox({
           </Combobox>
         )}
       />
-      {errors[name] && (
-        <span className="text-red-500 text-xs">{errors[name].message}</span>
-      )}
+      {error && <span className="text-red-500 text-xs">{error.message}</span>}
     </div>
   );
 }

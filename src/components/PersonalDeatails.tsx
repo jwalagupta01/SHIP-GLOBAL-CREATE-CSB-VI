@@ -12,20 +12,19 @@ import { BILLING_FIELDS } from "@/mock/arraypersonaldetails";
 import { personalDataschema } from "@/Schema/CsbIVSchemaZod";
 
 interface geetingsProps {
-  consignor: boolean;
-  setConsignor: any;
+  alldata: any;
   setAllData: any;
-  consignee: boolean;
+  steper: number;
+  setSteper: any;
 }
 
 const PersonalDeatails = ({
-  consignor,
-  setConsignor,
+  alldata,
   setAllData,
-  consignee,
+  steper,
+  setSteper,
 }: geetingsProps) => {
   const [billingCheck, setBillingCheck] = useState<boolean>(true);
-  const [formSubmit, setFormSubmit] = useState<boolean>(false);
   const [country, setCountry] = useState<any>([]);
   const [state, setState] = useState<any>([]);
 
@@ -46,19 +45,25 @@ const PersonalDeatails = ({
   function formOnSubmit(data: any): void {
     try {
       setAllData((prev: any) => ({ ...prev, personalData: data }));
-      setConsignor(false);
-      setFormSubmit(true);
+      setSteper(3);
     } catch (error) {
       console.error(error);
     }
   }
 
   function onchangeBtn() {
-    setConsignor(true);
-    setFormSubmit(false);
+    try {
+      setSteper(2);
+      setAllData((prev: any) => {
+        const updated = { ...prev };
+        delete updated?.personalData;
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  // country call
+  // country api call
   useEffect(() => {
     const fetchCountry = async () => {
       try {
@@ -72,7 +77,7 @@ const PersonalDeatails = ({
     };
     fetchCountry();
   }, []);
-  // state call
+  // state api call
   useEffect(() => {
     if (!watchvalue.country) return;
     const fetchState = async () => {
@@ -93,38 +98,36 @@ const PersonalDeatails = ({
     <div className="border border-gray-400 rounded w-full h-auto *:px-4">
       <div className="flex items-center justify-between h-13 border-b border-gray-400">
         <div className="flex items-center gap-x-2">
-          {!formSubmit ? (
-            <p
-              className={` px-2 rounded ${!consignor ? "bg-gray-300 text-black" : "bg-black text-white"}`}
-            >
-              2
-            </p>
-          ) : (
+          {Object.keys(alldata?.personalData || {}).length > 0 ? (
             <p className="bg-green-600 px-1 py-1 rounded text-white">
               <FaCheck />
+            </p>
+          ) : (
+            <p
+              className={` px-2 rounded ${steper !== 2 ? "bg-gray-300 text-black" : "bg-black text-white"}`}
+            >
+              2
             </p>
           )}
           <p className="font-semibold text-lg">Consignee Details</p>
         </div>
-        {!consignor && !consignee ? (
+        {Object.keys(alldata?.personalData || {}).length > 0 && (
           <p
             className="font-semibold text-blue-600 cursor-pointer hover:underline"
             onClick={onchangeBtn}
           >
             Change
           </p>
-        ) : (
-          ""
         )}
       </div>
-      {consignor && (
+      {steper == 2 && (
         <form
           onSubmit={personalDataForm.handleSubmit(formOnSubmit)}
           className="bg-white py-2"
         >
           <div>
             <p className="font-semibold">Personal Details</p>
-            <div className="grid grid-cols-3 *:w-70 mt-2 gap-y-3">
+            <div className="grid grid-cols-3 gap-x-2 mt-2 gap-y-3">
               {PERSONAL_DETAILS.map((item: any, index: number) => (
                 <PrimaryInput
                   placeholder={item.placeholder}
@@ -138,7 +141,7 @@ const PersonalDeatails = ({
               ))}
             </div>
             <p className="font-semibold mt-3">Shipping Address</p>
-            <div className="grid grid-cols-3 gap-y-3 *:w-70 mt-2">
+            <div className="grid grid-cols-3 gap-y-3 gap-x-2 mt-2">
               <BasicComboBox
                 label="Country"
                 list={country}
@@ -189,7 +192,7 @@ const PersonalDeatails = ({
             {!billingCheck && (
               <div>
                 <p className="font-semibold mt-3">Shipping Address</p>
-                <div className="grid grid-cols-3 gap-y-3 *:w-70 mt-2">
+                <div className="grid grid-cols-3 gap-y-3 gap-x-2 mt-2">
                   <BasicComboBox
                     label="Country"
                     list={country}

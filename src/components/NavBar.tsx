@@ -7,7 +7,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="h-15 w-full bg-slate-900 fixed flex px-13 items-center justify-between *:text-emerald-200 shadow-2xl/10 shadow-black">
+    <nav className="h-15 w-full bg-slate-900 fixed flex px-13 items-center justify-between *:text-emerald-200 shadow-2xl/10 shadow-black z-50">
       <p
         className="flex items-center gap-x-2 text-2xl font-semibold hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"
         onClick={() => {

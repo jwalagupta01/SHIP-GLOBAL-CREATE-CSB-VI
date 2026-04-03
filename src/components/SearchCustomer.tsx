@@ -3,25 +3,22 @@ import { customers } from "@/mock/user";
 import { UserComboBox } from "./Element/PrimaryComboBox";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { SearchCustomerSchema } from "@/Schema/CsbIVSchemaZod";
 
 interface geetingsProps {
-  consignee: boolean;
-  setConsignor: any;
-  setConsignee: any;
+  alldata: any;
   setAllData: any;
+  steper: number;
+  setSteper: any;
 }
 
 const SearchCustomer = ({
-  consignee,
-  setConsignor,
-  setConsignee,
+  alldata,
   setAllData,
+  steper,
+  setSteper,
 }: geetingsProps) => {
-  const [formSubmit, setFormSubmit] = useState<boolean>(false);
-
   const SearchCustomer = useForm({
     mode: "onChange",
     resolver: zodResolver(SearchCustomerSchema),
@@ -34,39 +31,46 @@ const SearchCustomer = ({
 
   function onHandleSubmit(data: any): void {
     try {
-      setConsignor(true);
-      setConsignee(false);
-      setFormSubmit(true);
       setAllData((prev: any) => ({ ...prev, userDetails: data }));
+      setSteper(2);
     } catch (error) {
       console.error(error);
     }
   }
 
   function userChange() {
-    setConsignor(false);
-    setConsignee(true);
-    setFormSubmit(false);
+    try {
+      setAllData((prev: any) => {
+        const update = { ...prev };
+        delete update?.userDetails;
+
+        return update;
+      });
+      setSteper(1);
+      console.log(alldata);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
     <div className="border border-gray-400 rounded w-full h-auto *:px-4">
       <div className="flex items-center justify-between h-13 border-b border-gray-400">
         <div className="flex items-center gap-x-2">
-          {!formSubmit ? (
-            <p
-              className={`px-2 rounded ${!consignee ? "bg-gray-300 text-black" : "bg-black text-white"}`}
-            >
-              1
-            </p>
-          ) : (
+          {Object.keys(alldata?.userDetails || {}).length > 0 ? (
             <p className="bg-green-600 px-1 py-1 rounded text-white">
               <FaCheck />
+            </p>
+          ) : (
+            <p
+              className={`px-2 rounded ${steper !== 1 ? "bg-gray-300 text-black" : "bg-black text-white"}`}
+            >
+              1
             </p>
           )}
           <p className="font-semibold text-lg">Consignor Details</p>
         </div>
-        {!consignee && (
+        {Object.keys(alldata?.userDetails || {}).length > 0 && (
           <p
             className="font-semibold text-blue-600 cursor-pointer hover:underline"
             onClick={userChange}
@@ -75,7 +79,7 @@ const SearchCustomer = ({
           </p>
         )}
       </div>
-      {consignee && (
+      {steper == 1 && (
         <form
           action=""
           onSubmit={SearchCustomer.handleSubmit(onHandleSubmit)}

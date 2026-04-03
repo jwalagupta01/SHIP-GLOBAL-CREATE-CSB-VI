@@ -1,6 +1,7 @@
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { get } from "react-hook-form";
 import { ButtonGroup } from "@/components/ui/button-group";
 
 interface geetingsProps {
@@ -24,6 +25,9 @@ export function PrimaryInput({
     register,
     formState: { errors },
   } = form;
+
+  const error = get(errors, name);
+
   return (
     <Field>
       <FieldLabel htmlFor={name} className="text-sm">
@@ -37,9 +41,9 @@ export function PrimaryInput({
         className="h-11 focus-visible:ring-1 focus-visible:border-blue-900 focus-visible:ring-blue-500/30"
         {...register(name)}
       />
-      {errors[name] && (
+      {error && (
         <FieldDescription className="text-xs text-red-500">
-          {errors[name]?.message}
+          {error.message}
         </FieldDescription>
       )}
     </Field>

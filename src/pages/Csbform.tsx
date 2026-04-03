@@ -2,15 +2,17 @@
 import { IoIosArrowForward } from "react-icons/io";
 import SearchCustomer from "@/components/SearchCustomer";
 import PersonalDeatails from "@/components/PersonalDeatails";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShipmentInfo from "@/components/ShipmentInfo";
+import ShippingPartner from "@/components/ShippingPartner";
 
 const Csbform = () => {
-  const [consignee, setConsignee] = useState<boolean>(true);
-  const [consignor, setConsignor] = useState<boolean>(false);
-  const [alldata, setAllData] = useState<any>([]);
+  const [steper, setSteper] = useState<number>(1);
+  const [alldata, setAllData] = useState<any>({});
 
-  console.log(alldata);
+  useEffect(() => {
+    console.log(alldata);
+  }, [alldata]);
 
   return (
     <div className="border w-full h-full ms-60 px-5 py-3 bg-gray-100">
@@ -26,18 +28,29 @@ const Csbform = () => {
       </div>
       <div className="mt-4 flex flex-col gap-y-3">
         <SearchCustomer
-          setConsignor={setConsignor}
-          setConsignee={setConsignee}
+          steper={steper}
+          setSteper={setSteper}
+          alldata={alldata}
           setAllData={setAllData}
-          consignee={consignee}
         />
         <PersonalDeatails
-          consignor={consignor}
-          setConsignor={setConsignor}
+          alldata={alldata}
           setAllData={setAllData}
-          consignee={consignee}
+          steper={steper}
+          setSteper={setSteper}
         />
-        <ShipmentInfo />
+        <ShipmentInfo
+          steper={steper}
+          setSteper={setSteper}
+          alldata={alldata}
+          setAllData={setAllData}
+        />
+        <ShippingPartner
+          steper={steper}
+          setSteper={setSteper}
+          alldata={alldata}
+          setAllData={setAllData}
+        />
       </div>
     </div>
   );
