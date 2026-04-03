@@ -83,16 +83,16 @@ const ShipmentInfo = ({
         const update = { ...prev };
         delete update.ShipmentData;
         return update;
-        setSteper(3);
       });
+      setSteper(3);
     } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <div className="border *:px-4 rounded">
-      <div className="h-13 flex items-center justify-between border-b">
+    <div className="border border-gray-400 *:px-4 rounded">
+      <div className="h-13 flex items-center justify-between border-b border-gray-400">
         <div className="flex items-center gap-x-2">
           {Object.keys(alldata?.ShipmentData || {}).length > 0 ? (
             <p className="bg-green-600 px-1 py-1 rounded text-white">
@@ -133,6 +133,7 @@ const ShipmentInfo = ({
             <DropDownComboBox
               valueKey="currency"
               labelKey="currency"
+              label="Select Currency"
               list={currency}
               placeholder="Select Currency"
               name="invoice_currency"
@@ -165,9 +166,13 @@ const ShipmentInfo = ({
           </div>
           <div className="flex items-center gap-x-3">
             <p>Item(s) Details</p>
-            <p className="text-xs text-red-600 bg-red-200/50 px-3 rounded">
+            <a
+              href="https://shipglobal.in/blogs/prohibited-item-and-restricted-goods-for-international-shipping/"
+              className="text-xs text-red-600 bg-red-200/50 px-3 rounded"
+              target="_blank"
+            >
               Items that can export
-            </p>
+            </a>
           </div>
           {fields.map((field, index) => (
             <div key={field.id} className="relative">
@@ -186,6 +191,7 @@ const ShipmentInfo = ({
                 <DropDownComboBox
                   valueKey="percentage"
                   labelKey="percentage"
+                  label="Select IGST"
                   list={IGST}
                   placeholder="Select IGST"
                   name={`products.${index}.item_igst`}

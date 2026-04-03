@@ -43,7 +43,6 @@ const SearchCustomer = ({
       setAllData((prev: any) => {
         const update = { ...prev };
         delete update?.userDetails;
-
         return update;
       });
       setSteper(1);

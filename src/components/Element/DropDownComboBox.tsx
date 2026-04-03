@@ -19,6 +19,7 @@ interface geetingsProps {
   placeholder: string;
   name: string;
   form: any;
+  label: string;
 }
 
 export function DropDownComboBox({
@@ -28,6 +29,7 @@ export function DropDownComboBox({
   placeholder,
   name,
   form,
+  label,
 }: geetingsProps) {
   const {
     control,
@@ -39,7 +41,7 @@ export function DropDownComboBox({
   return (
     <div>
       <label htmlFor="">
-        Invoice Currency <span className="text-red-500">*</span>
+        {label} <span className="text-red-500">*</span>
       </label>
       <Controller
         control={control}
@@ -49,7 +51,8 @@ export function DropDownComboBox({
             items={list}
             value={field.value}
             onValueChange={(val) => field.onChange(val)}
-            defaultValue={list[0]}
+            defaultValue={list?.[0]?.[valueKey]}
+            defaultInputValue={list?.[0]?.[valueKey]}
           >
             <ComboboxInput
               placeholder={placeholder}

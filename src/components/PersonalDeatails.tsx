@@ -27,6 +27,7 @@ const PersonalDeatails = ({
   const [billingCheck, setBillingCheck] = useState<boolean>(true);
   const [country, setCountry] = useState<any>([]);
   const [state, setState] = useState<any>([]);
+  const [billingstate, setBillingState] = useState<any>([]);
 
   const personalDataForm = useForm({
     mode: "onChange",
@@ -57,6 +58,7 @@ const PersonalDeatails = ({
       setAllData((prev: any) => {
         const updated = { ...prev };
         delete updated?.personalData;
+        return updated;
       });
     } catch (error) {
       console.error(error);
@@ -77,9 +79,11 @@ const PersonalDeatails = ({
     };
     fetchCountry();
   }, []);
+
   // state api call
   useEffect(() => {
     if (!watchvalue.country) return;
+    personalDataForm.setValue("state", "");
     const fetchState = async () => {
       try {
         const res = await axios.post(
@@ -93,6 +97,26 @@ const PersonalDeatails = ({
     };
     fetchState();
   }, [watchvalue.country]);
+
+  // Billing state api call
+  useEffect(() => {
+    if (!watchvalue.billing_Country) return;
+
+    personalDataForm.setValue("billing_State", "");
+
+    const fetchState = async () => {
+      try {
+        const res = await axios.post(
+          "https://qa2.franchise.backend.shipgl.in/api/v1/location/statesv2",
+          { state_country_code: watchvalue.billing_Country },
+        );
+        setBillingState(res?.data?.data?.states);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchState();
+  }, [watchvalue.billing_Country]);
 
   return (
     <div className="border border-gray-400 rounded w-full h-auto *:px-4">
@@ -204,7 +228,7 @@ const PersonalDeatails = ({
                   />
                   <BasicComboBox
                     label="State"
-                    list={state}
+                    list={billingstate}
                     fOption="Select State"
                     name="billing_State"
                     valueKey="state_name"
