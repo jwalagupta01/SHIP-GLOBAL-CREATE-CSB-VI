@@ -120,7 +120,7 @@ const PersonalDeatails = ({
 
   return (
     <div className="border border-gray-400 rounded w-full h-auto *:px-4">
-      <div className="flex items-center justify-between h-13 border-b border-gray-400">
+      <div className="flex items-center justify-between h-13 border-b border-gray-400 bg-blue-50">
         <div className="flex items-center gap-x-2">
           {Object.keys(alldata?.personalData || {}).length > 0 ? (
             <p className="bg-green-600 px-1 py-1 rounded text-white">

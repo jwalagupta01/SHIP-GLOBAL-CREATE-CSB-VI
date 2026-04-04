@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { BsStars } from "react-icons/bs";
 import { NavProfileIcon } from "./Element/navProfileIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { LuPackagePlus } from "react-icons/lu";
+import { LuBoxes, LuPackagePlus } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import {
@@ -23,7 +23,8 @@ const Navbar = () => {
   const token = useSelector((state: any) => state.auth.token);
   const [quickShow, setQuickShow] = useState<boolean>(false);
   const quickAction = [
-    { label: "Add Order", to: "/csbIVForm", icon: <LuPackagePlus /> },
+    { label: "Add Order", to: "/add-order", icon: <LuPackagePlus /> },
+    { label: "Add Multiorder", to: "/add-multibox", icon: <LuBoxes /> },
     { label: "Add CSB-v Order", to: "", icon: <LuPackagePlus /> },
     { label: "Rate Calculator", to: "", icon: <LuPackagePlus /> },
   ];
