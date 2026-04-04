@@ -1,10 +1,8 @@
+"use client"; // ✅ Moved to top
+
 import { Controller } from "react-hook-form";
-
-("use client");
-
 import * as React from "react";
 import { CalendarIcon } from "lucide-react";
-
 import { Calendar } from "@/components/ui/calendar";
 import { Field, FieldLabel } from "@/components/ui/field";
 import {
@@ -20,10 +18,7 @@ import {
 } from "@/components/ui/popover";
 
 function formatDate(date: Date | undefined) {
-  if (!date) {
-    return "";
-  }
-
+  if (!date) return "";
   return date.toLocaleDateString("en-US", {
     day: "2-digit",
     month: "long",
@@ -32,27 +27,18 @@ function formatDate(date: Date | undefined) {
 }
 
 function isValidDate(date: Date | undefined) {
-  if (!date) {
-    return false;
-  }
+  if (!date) return false;
   return !isNaN(date.getTime());
 }
 
-interface getingsprops {
+interface PrimaryDateProps {
   label: string;
   name: string;
-  minDate?: Date;
-  maxDate?: Date;
+  maxDate?: Date; // ✅ kept but optional, not used in disable now
   form: any;
 }
 
-export function PrimaryDate({
-  label,
-  name,
-  minDate,
-  maxDate,
-  form,
-}: getingsprops) {
+export function PrimaryDate({ label, name, form }: PrimaryDateProps) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -62,6 +48,7 @@ export function PrimaryDate({
   const [value, setValue] = React.useState(formatDate(today));
 
   const { control } = form;
+
   return (
     <Controller
       control={control}
@@ -70,9 +57,10 @@ export function PrimaryDate({
       render={({ field }) => {
         React.useEffect(() => {
           if (!field.value) {
-            field.onChange(today); // ✅ auto set today
+            field.onChange(today);
           }
         }, [field]);
+
         return (
           <Field className="w-full">
             <FieldLabel htmlFor="date-required">
@@ -86,11 +74,11 @@ export function PrimaryDate({
                 className="w-full"
                 placeholder="June 01, 2025"
                 onChange={(e) => {
-                  const date = new Date(e.target.value);
+                  const parsed = new Date(e.target.value);
                   setValue(e.target.value);
-                  if (isValidDate(date)) {
-                    setDate(date);
-                    setMonth(date);
+                  if (isValidDate(parsed)) {
+                    setDate(parsed);
+                    setMonth(parsed);
                   }
                 }}
                 onKeyDown={(e) => {
@@ -124,29 +112,20 @@ export function PrimaryDate({
                       selected={date}
                       month={month}
                       onMonthChange={setMonth}
-                      onSelect={(date) => {
-                        if (!date) return;
-
-                        date.setHours(0, 0, 0, 0); // normalize
-
-                        setDate(date);
-                        setValue(formatDate(date));
+                      onSelect={(selected) => {
+                        if (!selected) return;
+                        selected.setHours(0, 0, 0, 0);
+                        setDate(selected);
+                        setValue(formatDate(selected));
                         setOpen(false);
-                        field.onChange(date);
+                        field.onChange(selected);
                       }}
-                      disabled={(date) => {
-                        if (!minDate || !maxDate) return false;
-
-                        const d = new Date(date);
+                      disabled={(day) => {
+                        const d = new Date(day);
                         d.setHours(0, 0, 0, 0);
 
-                        const min = new Date(minDate);
-                        min.setHours(0, 0, 0, 0);
-
-                        const max = new Date(maxDate);
-                        max.setHours(0, 0, 0, 0);
-
-                        return d < min || d > max;
+                        // ✅ Block any date AFTER today (future dates disabled)
+                        return d > today;
                       }}
                     />
                   </PopoverContent>

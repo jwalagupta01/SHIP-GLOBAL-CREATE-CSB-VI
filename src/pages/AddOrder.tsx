@@ -7,7 +7,7 @@ import ShipmentInfo from "@/components/ShipmentInfo";
 import ShippingPartner from "@/components/ShippingPartner";
 
 const Csbform = () => {
-  const [steper, setSteper] = useState<number>(1);
+  const [steper, setSteper] = useState<number>(3);
   const [alldata, setAllData] = useState<any>({});
 
   useEffect(() => {
@@ -44,6 +44,7 @@ const Csbform = () => {
           setSteper={setSteper}
           alldata={alldata}
           setAllData={setAllData}
+          Multiorder={false}
         />
         <ShippingPartner
           steper={steper}

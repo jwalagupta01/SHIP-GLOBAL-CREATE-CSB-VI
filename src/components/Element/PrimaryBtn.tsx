@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 
 interface geetingsBtnProps {
-  text: string;
+  text: any;
   variant?:
     | "default"
     | "outline"
@@ -12,16 +12,9 @@ interface geetingsBtnProps {
   className: string;
 }
 
-export const PrimaryBtn = ({
-  text,
-  variant,
-  className,
-}: geetingsBtnProps) => {
+export const PrimaryBtn = ({ text, variant, className }: geetingsBtnProps) => {
   return (
-    <Button
-      className={`${className} cursor-pointer`}
-      variant={variant}
-    >
+    <Button className={`${className} cursor-pointer`} variant={variant}>
       {text}
     </Button>
   );
