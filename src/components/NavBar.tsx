@@ -1,23 +1,34 @@
 import { useNavigate } from "react-router-dom";
 import { BsStars } from "react-icons/bs";
 import { NavProfileIcon } from "./Element/navProfileIcon";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LuPackagePlus } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import {
+  addProfileDetails,
+  // deleteProfileDetails,
+  addBalance,
+} from "@/Redux/HomeData.ts/ProfileDetails";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const balance = useSelector((state: any) => state.profileDetails.balance);
+  const profileDetails = useSelector(
+    (state: any) => state.profileDetails.personalDetail,
+  );
+  console.log(profileDetails);
   const boxRef = useRef<HTMLDivElement | null>(null);
   const token = useSelector((state: any) => state.auth.token);
   const [quickShow, setQuickShow] = useState<boolean>(false);
-  const [balance, setBalance] = useState<number>(0);
   const quickAction = [
     { label: "Add Order", to: "/csbIVForm", icon: <LuPackagePlus /> },
     { label: "Add CSB-v Order", to: "", icon: <LuPackagePlus /> },
     { label: "Rate Calculator", to: "", icon: <LuPackagePlus /> },
   ];
 
+  //  outSide the box click
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (boxRef.current && !boxRef.current.contains(event.target)) {
@@ -30,7 +41,10 @@ const Navbar = () => {
     };
   }, []);
 
+  // fetch balance
   useEffect(() => {
+    if (token == "") return;
+
     const fetchBalance = async () => {
       try {
         const res = await axios.get(
@@ -41,12 +55,34 @@ const Navbar = () => {
             },
           },
         );
-        setBalance(res?.data?.data?.wallet_balance);
+        dispatch(addBalance(res?.data?.data?.wallet_balance));
       } catch (error) {
         console.error(error);
       }
     };
     fetchBalance();
+  }, [token]);
+
+  // fetch profile Details
+  useEffect(() => {
+    if (token == "") return;
+
+    async function profileDetails() {
+      try {
+        const res = await axios.get(
+          "https://qa2.franchise.backend.shipgl.in/api/v1/auth/get-profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        dispatch(addProfileDetails(res?.data?.data));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    profileDetails();
   }, [token]);
 
   if (!token) return null;
