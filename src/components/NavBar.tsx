@@ -4,12 +4,14 @@ import { NavProfileIcon } from "./Element/navProfileIcon";
 import { useSelector } from "react-redux";
 import { LuPackagePlus } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const boxRef = useRef<HTMLDivElement | null>(null);
   const token = useSelector((state: any) => state.auth.token);
   const [quickShow, setQuickShow] = useState<boolean>(false);
+  const [balance, setBalance] = useState<number>(0);
   const quickAction = [
     { label: "Add Order", to: "/csbIVForm", icon: <LuPackagePlus /> },
     { label: "Add CSB-v Order", to: "", icon: <LuPackagePlus /> },
@@ -27,6 +29,25 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      try {
+        const res = await axios.get(
+          "https://qa2.franchise.backend.shipgl.in/api/v1/wallet/balance",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        setBalance(res?.data?.data?.wallet_balance);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchBalance();
+  }, [token]);
 
   if (!token) return null;
   return (
@@ -55,7 +76,7 @@ const Navbar = () => {
             >
               {quickAction.map((items, index) => (
                 <div
-                  className="flex flex-col items-center justify-center w-28 h-28 px-3 bg-blue-200/30 rounded *:text-center"
+                  className="flex flex-col items-center justify-center w-28 h-28 px-3 bg-blue-200/30 rounded *:text-center cursor-pointer"
                   key={index}
                   onClick={() => {
                     navigate(items.to);
@@ -76,7 +97,7 @@ const Navbar = () => {
             src="https://qa2.franchise.shipgl.in/assets/wallet-COmO1cnz.svg"
             alt=""
           />
-          <p>₹ 9471.15</p>
+          <p>₹ {balance}</p>
           <p className="text-blue-800 font-medium hover:underline cursor-pointer">
             Recharge
           </p>

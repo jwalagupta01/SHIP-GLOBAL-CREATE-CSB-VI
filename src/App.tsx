@@ -2,7 +2,7 @@ import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Sidebar from "./components/SideBar";
 import Csbform from "./pages/Csbform";
-import { Login } from "./components/Login";
+import { Login } from "./pages/Login";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { DashBoard } from "./pages/DashBoard";
@@ -24,9 +24,9 @@ const App = () => {
         <Sidebar />
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<DashBoard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/csbIVForm" element={<Csbform />} />
-          <Route path="/dashboard" element={<DashBoard />} />
         </Routes>
       </div>
     </div>

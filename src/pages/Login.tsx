@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { PassInput, PrimaryInput } from "./Element/primaryInput";
-import { PrimaryBtn } from "./Element/PrimaryBtn";
+import { PassInput, PrimaryInput } from "../components/Element/primaryInput";
+import { PrimaryBtn } from "../components/Element/PrimaryBtn";
 import { loginSchema } from "@/Schema/LoginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -30,9 +30,8 @@ export function Login() {
         setMessage("Login SuccessFully");
 
         if (res?.data?.message == "Access token created") {
-          console.log(res?.data?.data?.token_details);
-          dispatch(addToken(res?.data?.data?.token_details));
-          navigate("/add-order")
+          dispatch(addToken(res?.data?.data?.token_details?.token));
+          navigate("/dashboard");
         } else {
           setMessage("Wrong email or password. Try again");
         }

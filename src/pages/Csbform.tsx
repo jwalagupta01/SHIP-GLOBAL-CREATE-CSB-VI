@@ -7,7 +7,7 @@ import ShipmentInfo from "@/components/ShipmentInfo";
 import ShippingPartner from "@/components/ShippingPartner";
 
 const Csbform = () => {
-  const [steper, setSteper] = useState<number>(3);
+  const [steper, setSteper] = useState<number>(1);
   const [alldata, setAllData] = useState<any>({});
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const Csbform = () => {
   }, [alldata]);
 
   return (
-    <div className="border w-full h-full ms-60 px-5 py-3 bg-gray-100 overflow-scroll pt-15">
+    <div className="border w-full h-full px-5 py-3 bg-gray-100 overflow-scroll pt-15">
       <div className="">
         <p className="text-3xl font-semibold">Create CSB-IV Order</p>
         <div className="flex items-center gap-x-2 *:text-lg">
