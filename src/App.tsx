@@ -1,10 +1,11 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Sidebar from "./components/SideBar";
 import Csbform from "./pages/Csbform";
 import { Login } from "./components/Login";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { DashBoard } from "./pages/DashBoard";
 
 const App = () => {
   const token = useSelector((state: any) => state.auth.token);
@@ -22,8 +23,10 @@ const App = () => {
       <div className="flex h-screen w-screen flex-row justify-between">
         <Sidebar />
         <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/csbIVForm" element={<Csbform />} />
+          <Route path="/dashboard" element={<DashBoard />} />
         </Routes>
       </div>
     </div>

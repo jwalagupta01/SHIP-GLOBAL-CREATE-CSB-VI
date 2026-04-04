@@ -12,11 +12,11 @@ import { useState } from "react";
 
 const Sidebar = () => {
   const token = useSelector((state: any) => state.auth.token);
-  const [sidepin, setSidePin] = useState<boolean>(false);
+  const [sidepin, setSidePin] = useState<boolean>(true);
   const [hovered, setHovered] = useState(false);
 
   const sidemenu = [
-    { to: "/addTodo", label: "Dashboard", icon: <LuLayoutDashboard /> },
+    { to: "/dashboard", label: "Dashboard", icon: <LuLayoutDashboard /> },
     { to: "/add-order", label: "Orders", icon: <LuBox /> },
     { to: "/addTodo", label: "Multibox", icon: <RxDashboard /> },
     { to: "/alltodo", label: "Customers", icon: <FaUserFriends /> },
@@ -34,7 +34,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`w-auto pt-25 h-full relative shadow-2xl bg-white border-e py-5 px-4`}
+      className={`w-auto pt-25 h-full relative shadow-2xl bg-white border-e py-5 px-4 transition-all duration-500 ease-in-out ${isExpanded ? "max-w-[240px]" : "max-w-[70px]"}`}
       onMouseEnter={() => {
         setHovered(true);
       }}
@@ -50,7 +50,16 @@ const Sidebar = () => {
               className="w-full px-5 py-3 rounded-lg flex items-center gap-x-3 text-gray-500 font-medium"
             >
               <span>{items.icon}</span>
-              {isExpanded && <span>{items.label}</span>}
+              <span
+                className={`whitespace-nowrap transition-all duration-300
+                ${
+                  isExpanded
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 -translate-x-2"
+                }`}
+              >
+                {items.label}
+              </span>
             </NavLink>
           </li>
         ))}
