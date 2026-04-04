@@ -1,45 +1,68 @@
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { LuLayers3, LuLayoutDashboard, LuWallet } from "react-icons/lu";
+import { LuBox } from "react-icons/lu";
+import { RxDashboard } from "react-icons/rx";
+import { FaRegHandshake, FaUserFriends } from "react-icons/fa";
+import { BsCalculator } from "react-icons/bs";
+import { IoDocumentsOutline, IoSettingsOutline } from "react-icons/io5";
+import { LuPin } from "react-icons/lu";
+import { LuPinOff } from "react-icons/lu";
+import { useState } from "react";
 
 const Sidebar = () => {
   const token = useSelector((state: any) => state.auth.token);
+  const [sidepin, setSidePin] = useState<boolean>(false);
+  const [hovered, setHovered] = useState(false);
+
+  const sidemenu = [
+    { to: "/addTodo", label: "Dashboard", icon: <LuLayoutDashboard /> },
+    { to: "/add-order", label: "Orders", icon: <LuBox /> },
+    { to: "/addTodo", label: "Multibox", icon: <RxDashboard /> },
+    { to: "/alltodo", label: "Customers", icon: <FaUserFriends /> },
+    { to: "/userData", label: "Rate Calculator", icon: <BsCalculator /> },
+    { to: "/userData", label: "Wallet", icon: <LuWallet /> },
+    { to: "/userData", label: "Bulk Report", icon: <LuLayers3 /> },
+    { to: "/userData", label: "Documents", icon: <IoDocumentsOutline /> },
+    { to: "/userData", label: "Agreement Center", icon: <FaRegHandshake /> },
+    { to: "/userData", label: "Settings", icon: <IoSettingsOutline /> },
+  ];
+
   if (!token) return null;
+
+  const isExpanded = sidepin || hovered;
+
   return (
-    <div className="w-60 h-full fixed shadow-2xl bg-slate-900 shadow-black py-5">
-      <ul className="flex flex-col gap-y-2 *:cursor-pointer *:font-semibold">
-        <li className="flex">
-          <NavLink
-            to="/"
-            className="h-13 w-full py-3 px-5 rounded-lg text-amber-200 hover:bg-white hover:text-black hover:scale-105 duration-300 transition-transform ease-in-out"
-          >
-            CREATE CSB ORDER
-          </NavLink>
-        </li>
-        {/* <li className="flex items-center">
-          <NavLink
-          to="/addTodo"
-          className="h-13 w-full px-5 py-3 rounded-lg text-amber-200 hover:bg-white hover:text-black hover:scale-105 duration-300 transition-transform"
-          >
-          ADD TODO
-          </NavLink>
+    <div
+      className={`w-auto pt-25 h-full relative shadow-2xl bg-white border-e py-5 px-4`}
+      onMouseEnter={() => {
+        setHovered(true);
+      }}
+      onMouseLeave={() => {
+        setHovered(false);
+      }}
+    >
+      <ul className="flex flex-col gap-y-1 *:cursor-pointer *:font-semibold">
+        {sidemenu.map((items, index) => (
+          <li className="flex items-center" key={index}>
+            <NavLink
+              to={items.to}
+              className="w-full px-5 py-3 rounded-lg flex items-center gap-x-3 text-gray-500 font-medium"
+            >
+              <span>{items.icon}</span>
+              {isExpanded && <span>{items.label}</span>}
+            </NavLink>
           </li>
-          <li className="flex">
-          <NavLink
-          to="/alltodo"
-          className="h-13 w-full py-3 px-5 rounded-lg text-amber-200 hover:bg-white hover:text-black hover:scale-105 duration-300 transition-transform ease-in-out"
-          >
-          ALL TODO
-          </NavLink>
-          </li>
-          <li className="flex">
-          <NavLink
-          to="/userData"
-          className="h-13 w-full py-3 px-5 rounded-lg text-amber-200 hover:bg-white hover:text-black hover:scale-105 duration-300 transition-transform ease-in-out"
-          >
-          USER DATA
-          </NavLink>
-          </li> */}
+        ))}
       </ul>
+      <div
+        className="absolute top-18 right-4 text-gray-600 text-lg cursor-pointer"
+        onClick={() => {
+          setSidePin(!sidepin);
+        }}
+      >
+        {isExpanded && <>{!sidepin ? <LuPin /> : <LuPinOff />} </>}
+      </div>
     </div>
   );
 };

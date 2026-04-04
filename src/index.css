@@ -6,8 +6,10 @@
 @custom-variant dark (&:is(.dark *));
 
 .active {
-  background-color: #fee685;
-  color: #0f172b;
+  /* background-color: #fee685; */
+  border: 1px solid orange;
+  color: orange;
+  background-color: rgba(255, 166, 0, 0.088);
 }
 
 ::-webkit-scrollbar {

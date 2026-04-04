@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { get } from "react-hook-form";
 import { ButtonGroup } from "@/components/ui/button-group";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 
 interface geetingsProps {
   placeholder: string;
@@ -97,28 +99,39 @@ export function SecondryInput({
   );
 }
 
-import { InfoIcon } from "lucide-react";
-// import { Field, FieldLabel } from "@/components/ui/field"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-  InputGroupText,
-} from "@/components/ui/input-group";
+interface geetingsPassProps {
+  type: string;
+  label: string;
+  form: any;
+  name: string;
+  showPass: boolean
+  setShowPass: any
+}
 
-export function eyeBtn() {
+export function PassInput({ type, label, form, name, showPass, setShowPass }: geetingsPassProps) {
+
+  const {register, formState: {errors}} = form
+
   return (
-    <Field>
-      <FieldLabel htmlFor="input-group-url">Website URL</FieldLabel>
-      <InputGroup>
-        <InputGroupInput id="input-group-url" placeholder="example.com" />
-        <InputGroupAddon>
-          <InputGroupText>https://</InputGroupText>
-        </InputGroupAddon>
-        <InputGroupAddon align="inline-end">
-          <InfoIcon />
-        </InputGroupAddon>
-      </InputGroup>
-    </Field>
+    <div className="flex flex-col w-full gap-y-2">
+      <label htmlFor="" className="text-sm">
+        {label} <span className="text-red-500">*</span>
+      </label>
+      <div className="w-full relative">
+        <input
+          type={type}
+          className="border border-gray-200 h-11 w-full rounded-md px-3 outline-0 focus-visible:ring-1 focus-visible:border-blue-900 focus-visible:ring-blue-500/30"
+          placeholder="Enter Your Password"
+          {...register(name)}
+        />
+        <p className="absolute top-3 right-5 text-2xl cursor-pointer" onClick={() => {setShowPass(!showPass)}}>
+          {showPass ? (<FaEye />) : (<FaEyeSlash />)}
+          
+        </p>
+      </div>
+      {errors[name] && (
+        <span className="text-sm text-red-500">{errors[name].message}</span>
+      )}
+    </div>
   );
 }
