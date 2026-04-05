@@ -30,7 +30,8 @@ const ShipmentInfo = ({
   Multiorder,
 }: geetingsProps) => {
   const [currency, setCurrency] = useState<string[]>([]);
-  const [showMultiBoxProduct, setShowMultiBoxProduct] = useState<boolean>(true);
+  const [showMultiBoxProduct, setShowMultiBoxProduct] =
+    useState<boolean>(false);
   const token = useSelector((state: any) => state.auth.token);
   const ShipmentData = useForm({
     mode: "onChange",
@@ -45,7 +46,7 @@ const ShipmentInfo = ({
               pro_length: "",
               pro_breadth: "",
               pro_height: "",
-              productS: [
+              products: [
                 {
                   item_name: "",
                   item_sku: "",
@@ -73,6 +74,15 @@ const ShipmentInfo = ({
         },
   });
 
+  const getDefaultProduct = () => ({
+    item_name: "",
+    item_sku: "",
+    item_hsn: "",
+    item_qty: "",
+    item_unit_price: "",
+    item_igst: "",
+  });
+
   // const watchValue = ShipmentData.watch();
   const box_number = Number(ShipmentData.watch("box_number") || 1);
 
@@ -81,6 +91,14 @@ const ShipmentInfo = ({
 
   const formOnSubmit = (data: any): void => {
     try {
+      if (Multiorder) {
+        // setAllData((prev: any) => ({ ...prev, ShipmentData: data }));
+        setShowMultiBoxProduct(true);
+      } else {
+        setAllData((prev: any) => ({ ...prev, ShipmentData: data }));
+        setSteper(4);
+      }
+
       setAllData((prev: any) => ({ ...prev, ShipmentData: data }));
       setSteper(4);
     } catch (error) {
@@ -122,6 +140,29 @@ const ShipmentInfo = ({
     }
     FetchCurrency();
   }, []);
+
+  useEffect(() => {
+    if (!Multiorder) return;
+
+    const currentBoxes = ShipmentData.getValues("Boxes") || [];
+
+    const updatedBoxes = Array.from({ length: box_number }, (_, i) => {
+      const existingBox = currentBoxes[i];
+
+      return {
+        dead_weight: existingBox?.dead_weight || "",
+        pro_length: existingBox?.pro_length || "",
+        pro_breadth: existingBox?.pro_breadth || "",
+        pro_height: existingBox?.pro_height || "",
+        products:
+          existingBox?.products && existingBox.products.length > 0
+            ? existingBox.products
+            : [getDefaultProduct()],
+      };
+    });
+
+    ShipmentData.setValue("Boxes", updatedBoxes);
+  }, [box_number, Multiorder]);
 
   return (
     <div className="border border-gray-400 *:px-4 rounded">
@@ -203,25 +244,18 @@ const ShipmentInfo = ({
           )}
           <div className="flex justify-end my-5">
             <PrimaryBtn
+              type="submit"
+              variant="default"
+              className="bg-blue-800 hover:bg-blue-600 px-6 py-5"
               text={
                 Multiorder ? (
                   <>
-                    {box_number > 1 ? (
-                      <>
-                        <FaPlus /> Add Boxes
-                      </>
-                    ) : (
-                      <>
-                        <FaPlus /> Add Box
-                      </>
-                    )}
+                    <FaPlus /> {box_number > 1 ? "Add Boxes" : "Add Box"}
                   </>
                 ) : (
                   "Continue"
                 )
               }
-              variant="default"
-              className="bg-blue-800 hover:bg-blue-600 px-6 py-5"
             />
           </div>
         </form>
@@ -230,13 +264,17 @@ const ShipmentInfo = ({
       )}
       {showMultiBoxProduct && Multiorder && (
         <div className="absolute top-0 left-0 h-screen w-screen bg-black/30 z-51 flex items-center justify-center">
-          <div className="bg-white rounded-2xl w-4/5">
-            <OrderItemsDetails
-              Multiorder={Multiorder}
-              ShipmentData={ShipmentData}
-              boxesNo={box_number}
-              setShowMultiBoxProduct={setShowMultiBoxProduct}
-            />
+          <div className="bg-white rounded-2xl w-4/5 pb-10 px-10 max-h-[90vh] overflow-y-auto">
+            {Array.from({ length: box_number }).map((_, i) => (
+              <OrderItemsDetails
+                key={i}
+                Multiorder={Multiorder}
+                ShipmentData={ShipmentData}
+                boxesNo={box_number}
+                setShowMultiBoxProduct={setShowMultiBoxProduct}
+                boxIndex={i}
+              />
+            ))}
           </div>
         </div>
       )}

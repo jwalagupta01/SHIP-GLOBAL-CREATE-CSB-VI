@@ -26,7 +26,7 @@ export const BOXES_DETAILS = z.object({
     .number()
     .min(1, "Height must be atleast 1 cm")
     .max(120, "Breadth cannot be more than 120 cm"),
-  productS: z
+  products: z
     .array(ProductSchema)
     .min(1, "At least one product is required")
     .max(25, "Height cannot be more than 120 cm"),

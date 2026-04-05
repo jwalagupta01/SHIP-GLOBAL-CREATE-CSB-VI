@@ -10,11 +10,21 @@ interface geetingsBtnProps {
     | "destructive"
     | "link";
   className: string;
+  type?: "submit" | "button" | "reset";
 }
 
-export const PrimaryBtn = ({ text, variant, className }: geetingsBtnProps) => {
+export const PrimaryBtn = ({
+  text,
+  variant,
+  className,
+  type = "submit",
+}: geetingsBtnProps) => {
   return (
-    <Button className={`${className} cursor-pointer`} variant={variant}>
+    <Button
+      className={`${className} cursor-pointer`}
+      variant={variant}
+      type={type}
+    >
       {text}
     </Button>
   );

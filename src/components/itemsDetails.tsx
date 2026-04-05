@@ -10,6 +10,7 @@ interface geetingsProps {
   Multiorder: boolean;
   boxesNo: number;
   setShowMultiBoxProduct: any;
+  boxIndex?: number;
 }
 
 export function OrderItemsDetails({
@@ -17,10 +18,13 @@ export function OrderItemsDetails({
   Multiorder,
   boxesNo,
   setShowMultiBoxProduct,
+  boxIndex,
 }: geetingsProps) {
+  const fieldName = Multiorder ? `Boxes.${boxIndex}.products` : "products";
+
   const { fields, append, remove } = useFieldArray({
     control: ShipmentData.control,
-    name: "products",
+    name: fieldName,
   });
 
   const IGST = ["0%", "0.25%", "3%", "5%", "12%", "18%", "28%"].map(
@@ -32,7 +36,9 @@ export function OrderItemsDetails({
       {Multiorder && (
         <div className=" px-10 h-15 border-b flex justify-between items-center">
           <div className="flex items-center gap-x-3">
-            <p className="font-bold text-lg">Box 1 of {boxesNo} Boxes</p>
+            <p className="font-bold text-lg">
+              Box {(boxIndex ?? 0) + 1} of {boxesNo} Boxes
+            </p>
             <a
               className="text-xs bg-orange-300/70 px-2 rounded"
               href="https://shipglobal.in/blogs/prohibited-item-and-restricted-goods-for-international-shipping/"
@@ -85,7 +91,7 @@ export function OrderItemsDetails({
                 placeholder={items.placeholder}
                 label={items.label}
                 type={items.type}
-                name={`products.${index}.${items.name}`}
+                name={`${fieldName}.${index}.${items.name}`}
                 form={ShipmentData}
                 isRequired={items.isRequired}
                 key={idx}
@@ -97,7 +103,7 @@ export function OrderItemsDetails({
               label="Select IGST"
               list={IGST}
               placeholder="Select IGST"
-              name={`products.${index}.item_igst`}
+              name={`${fieldName}.${index}.item_igst`}
               form={ShipmentData}
             />
             {index > 0 && (
