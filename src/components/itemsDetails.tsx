@@ -4,6 +4,8 @@ import { DropDownComboBox } from "./Element/DropDownComboBox";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { useFieldArray } from "react-hook-form";
 import { FaXmark } from "react-icons/fa6";
+import { PrimaryBtn } from "./Element/PrimaryBtn";
+import { IoArrowBackOutline } from "react-icons/io5";
 
 interface geetingsProps {
   ShipmentData: any;
@@ -84,7 +86,7 @@ export function OrderItemsDetails({
         </div>
       )}
       {fields.map((field, index) => (
-        <div key={field.id} className="relative">
+        <div key={field.id} className={`relative ${Multiorder && "px-10"}`}>
           <div className="grid grid-cols-7 gap-x-3 mt-3 items-center">
             {SHIPMENT_PRODUCT.map((items: any, idx: number) => (
               <PrimaryInput
@@ -120,7 +122,9 @@ export function OrderItemsDetails({
           </div>
         </div>
       ))}
-      <div className="my-3 flex justify-between px-5">
+      <div
+        className={`my-3 flex justify-between ${Multiorder ? "px-10" : "px-5"}`}
+      >
         <p
           className="flex items-center gap-x-1 text-blue-600 font-semibold cursor-pointer"
           onClick={() =>
@@ -139,6 +143,37 @@ export function OrderItemsDetails({
         </p>
         <p className="font-bold text-xl">Total Price : INR 0.00</p>
       </div>
+      {Multiorder && (
+        <div className="flex justify-between px-10">
+          <div>
+            <PrimaryBtn
+              type="button"
+              variant="default"
+              className="border border-blue-800 bg-neutral-50 px-6 py-5 text-blue-800"
+              text={
+                <>
+                  <IoArrowBackOutline />
+                  Previous
+                </>
+              }
+            />
+          </div>
+          <div className="flex gap-x-3">
+            <PrimaryBtn
+              type="button"
+              variant="default"
+              className="border border-blue-800 bg-neutral-50 px-6 py-5 text-blue-800"
+              text="Save & Close"
+            />
+            <PrimaryBtn
+              type="button"
+              variant="default"
+              className="bg-blue-800 hover:bg-blue-600 px-6 py-5"
+              text="Save & Next"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

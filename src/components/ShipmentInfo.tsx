@@ -30,8 +30,7 @@ const ShipmentInfo = ({
   Multiorder,
 }: geetingsProps) => {
   const [currency, setCurrency] = useState<string[]>([]);
-  const [showMultiBoxProduct, setShowMultiBoxProduct] =
-    useState<boolean>(false);
+  const [showMultiBoxProduct, setShowMultiBoxProduct] = useState<boolean>(true);
   const token = useSelector((state: any) => state.auth.token);
   const ShipmentData = useForm({
     mode: "onChange",
@@ -264,7 +263,7 @@ const ShipmentInfo = ({
       )}
       {showMultiBoxProduct && Multiorder && (
         <div className="absolute top-0 left-0 h-screen w-screen bg-black/30 z-51 flex items-center justify-center">
-          <div className="bg-white rounded-2xl w-4/5 pb-10 px-10 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl w-4/5 pb-10 max-h-[90vh] overflow-y-auto">
             {Array.from({ length: box_number }).map((_, i) => (
               <OrderItemsDetails
                 key={i}
