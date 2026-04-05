@@ -1,3 +1,4 @@
+import { OrderItemsDetails } from "@/components/itemsDetails";
 import PersonalDeatails from "@/components/PersonalDeatails";
 import SearchCustomer from "@/components/SearchCustomer";
 import ShipmentInfo from "@/components/ShipmentInfo";
@@ -39,6 +40,7 @@ export function Multiorder() {
         setSteper={setSteper}
         Multiorder={true}
       />
+      
     </div>
   );
 }

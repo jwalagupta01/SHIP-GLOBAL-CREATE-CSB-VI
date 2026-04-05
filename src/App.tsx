@@ -19,7 +19,7 @@ const App = () => {
   }, [token]);
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-white">
+    <div className="flex flex-col h-screen w-screen bg-white relative">
       <NavBar />
       <div className="flex h-screen w-screen flex-row justify-between">
         <Sidebar />
@@ -31,6 +31,7 @@ const App = () => {
           <Route path="/add-multibox" element={<Multiorder />} />
         </Routes>
       </div>
+      
     </div>
   );
 };

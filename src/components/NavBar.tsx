@@ -18,7 +18,6 @@ const Navbar = () => {
   const profileDetails = useSelector(
     (state: any) => state.profileDetails.personalDetail,
   );
-  console.log(profileDetails);
   const boxRef = useRef<HTMLDivElement | null>(null);
   const token = useSelector((state: any) => state.auth.token);
   const [quickShow, setQuickShow] = useState<boolean>(false);

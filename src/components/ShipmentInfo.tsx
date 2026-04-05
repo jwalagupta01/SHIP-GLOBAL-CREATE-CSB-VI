@@ -1,20 +1,18 @@
-import {
-  SHIPMENT_DETAILS,
-  SHIPMENT_SIZE,
-  SHIPMENT_PRODUCT,
-} from "@/mock/arrayshipmentdetails";
+import { SHIPMENT_DETAILS } from "@/mock/arrayshipmentdetails";
 import { DropDownComboBox } from "./Element/DropDownComboBox";
 import { PrimaryDate } from "./Element/Primarydate";
-import { PrimaryInput, SecondryInput } from "./Element/primaryInput";
-import { useFieldArray, useForm } from "react-hook-form";
+import { PrimaryInput } from "./Element/primaryInput";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaPlus } from "react-icons/fa6";
 import { ShipmentinfoSchema } from "@/Schema/CsbIVSchemaZod";
 import { PrimaryBtn } from "./Element/PrimaryBtn";
-import { FaCheck, FaTrash } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { MULTI_ORDER_SCHEMA } from "@/Schema/MultiOrderShema";
+import { OrderItemsDetails } from "./itemsDetails";
 
 interface geetingsProps {
   steper: number;
@@ -32,33 +30,51 @@ const ShipmentInfo = ({
   Multiorder,
 }: geetingsProps) => {
   const [currency, setCurrency] = useState<string[]>([]);
+  const [showMultiBoxProduct, setShowMultiBoxProduct] = useState<boolean>(true);
   const token = useSelector((state: any) => state.auth.token);
   const ShipmentData = useForm({
     mode: "onChange",
-    resolver: zodResolver(ShipmentinfoSchema),
-    defaultValues: {
-      invoice_currency: "INR",
-      products: [
-        {
-          item_name: "",
-          item_sku: "",
-          item_hsn: "",
-          item_qty: "",
-          item_unit_price: "",
-          item_igst: "",
+    resolver: zodResolver(Multiorder ? MULTI_ORDER_SCHEMA : ShipmentinfoSchema),
+    defaultValues: Multiorder
+      ? {
+          invoice_currency: "INR",
+          box_number: 1,
+          Boxes: [
+            {
+              dead_weight: "",
+              pro_length: "",
+              pro_breadth: "",
+              pro_height: "",
+              productS: [
+                {
+                  item_name: "",
+                  item_sku: "",
+                  item_hsn: "",
+                  item_qty: "",
+                  item_unit_price: "",
+                  item_igst: "",
+                },
+              ],
+            },
+          ],
+        }
+      : {
+          invoice_currency: "INR",
+          products: [
+            {
+              item_name: "",
+              item_sku: "",
+              item_hsn: "",
+              item_qty: "",
+              item_unit_price: "",
+              item_igst: "",
+            },
+          ],
         },
-      ],
-    },
   });
 
-  const { fields, append, remove } = useFieldArray({
-    control: ShipmentData.control,
-    name: "products",
-  });
-
-  const IGST = ["0%", "0.25%", "3%", "5%", "12%", "18%", "28%"].map(
-    (percentage: string) => ({ percentage }),
-  );
+  // const watchValue = ShipmentData.watch();
+  const box_number = Number(ShipmentData.watch("box_number") || 1);
 
   const todayDate = new Date();
   todayDate.setHours(0, 0, 0, 0);
@@ -85,6 +101,9 @@ const ShipmentInfo = ({
     }
   }
 
+  //
+
+  // currency fetch
   useEffect(() => {
     async function FetchCurrency() {
       try {
@@ -168,101 +187,34 @@ const ShipmentInfo = ({
                 placeholder="Enter No. Of Box ..."
                 label="No. of Boxes"
                 type="tel"
-                name="Box_number"
+                name="box_number"
                 form={ShipmentData}
                 isRequired={true}
               />
             )}
           </div>
           {!Multiorder && (
-            <>
-              <p className="font-semibold">Box Measurements</p>
-              <div className="gap-x-2 grid grid-cols-4 my-3">
-                {SHIPMENT_SIZE.map((items: any, index: number) => (
-                  <SecondryInput
-                    placeholder={items.placeholder}
-                    stxt={items.stxt}
-                    label={items.label}
-                    key={index}
-                    form={ShipmentData}
-                    name={items.name}
-                  />
-                ))}
-              </div>
-              <div className="flex items-center gap-x-3">
-                <p>Item(s) Details</p>
-                <a
-                  href="https://shipglobal.in/blogs/prohibited-item-and-restricted-goods-for-international-shipping/"
-                  className="text-xs text-red-600 bg-red-200/50 px-3 rounded"
-                  target="_blank"
-                >
-                  Items that can export
-                </a>
-              </div>
-              {fields.map((field, index) => (
-                <div key={field.id} className="relative">
-                  <div className="grid grid-cols-7 gap-x-3 mt-3 items-center">
-                    {SHIPMENT_PRODUCT.map((items: any, idx: number) => (
-                      <PrimaryInput
-                        placeholder={items.placeholder}
-                        label={items.label}
-                        type={items.type}
-                        name={`products.${index}.${items.name}`}
-                        form={ShipmentData}
-                        isRequired={items.isRequired}
-                        key={idx}
-                      />
-                    ))}
-                    <DropDownComboBox
-                      valueKey="percentage"
-                      labelKey="percentage"
-                      label="Select IGST"
-                      list={IGST}
-                      placeholder="Select IGST"
-                      name={`products.${index}.item_igst`}
-                      form={ShipmentData}
-                    />
-                    {index > 0 && (
-                      <div className="flex items-center justify-center">
-                        <button
-                          type="button"
-                          onClick={() => remove(index)}
-                          className="mt-4 cursor-pointer text-red-500 hover:text-blue-600 text-2xl"
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-              <div className="my-3 flex justify-between px-5">
-                <p
-                  className="flex items-center gap-x-1 text-blue-600 font-semibold cursor-pointer"
-                  onClick={() =>
-                    append({
-                      item_name: "",
-                      item_sku: "",
-                      item_hsn: "",
-                      item_qty: "",
-                      item_unit_price: "",
-                      item_igst: "",
-                    })
-                  }
-                >
-                  <FaPlus />
-                  <span>ADD ANOTHER PRODUCT</span>
-                </p>
-                <p className="font-bold text-xl">Total Price : INR 0.00</p>
-              </div>
-            </>
+            <OrderItemsDetails
+              Multiorder={Multiorder}
+              ShipmentData={ShipmentData}
+              boxesNo={box_number}
+              setShowMultiBoxProduct={setShowMultiBoxProduct}
+            />
           )}
           <div className="flex justify-end my-5">
             <PrimaryBtn
               text={
                 Multiorder ? (
                   <>
-                    <FaPlus /> ADD BOX
+                    {box_number > 1 ? (
+                      <>
+                        <FaPlus /> Add Boxes
+                      </>
+                    ) : (
+                      <>
+                        <FaPlus /> Add Box
+                      </>
+                    )}
                   </>
                 ) : (
                   "Continue"
@@ -275,6 +227,18 @@ const ShipmentInfo = ({
         </form>
       ) : (
         ""
+      )}
+      {showMultiBoxProduct && Multiorder && (
+        <div className="absolute top-0 left-0 h-screen w-screen bg-black/30 z-51 flex items-center justify-center">
+          <div className="bg-white rounded-2xl w-4/5">
+            <OrderItemsDetails
+              Multiorder={Multiorder}
+              ShipmentData={ShipmentData}
+              boxesNo={box_number}
+              setShowMultiBoxProduct={setShowMultiBoxProduct}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

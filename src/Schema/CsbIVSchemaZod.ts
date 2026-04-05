@@ -108,7 +108,10 @@ export const ShipmentinfoSchema = z.object({
     .number()
     .min(1, "Length must be atleast 1 cm")
     .max(120, "Length cannot be more than 120 cm"),
-  pro_breadth: z.coerce.number().min(1, "Breadth must be atleast 1 cm"),
+  pro_breadth: z.coerce
+    .number()
+    .min(1, "Breadth must be atleast 1 cm")
+    .max(120, "Length cannot be more than 120 cm"),
   pro_height: z.coerce
     .number()
     .min(1, "Height must be atleast 1 cm")
@@ -116,5 +119,5 @@ export const ShipmentinfoSchema = z.object({
   products: z
     .array(ProductSchema)
     .min(1, "At least one product is required")
-    .max(120, "Height cannot be more than 120 cm"),
+    .max(25, "Maximux 25 Product add Details"),
 });

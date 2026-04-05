@@ -5,13 +5,22 @@ import PersonalDeatails from "@/components/PersonalDeatails";
 import { useEffect, useState } from "react";
 import ShipmentInfo from "@/components/ShipmentInfo";
 import ShippingPartner from "@/components/ShippingPartner";
+import { addOrderDetails } from "@/Redux/HomeData.ts/AddOder";
+import { useSelector, useDispatch } from "react-redux";
 
 const Csbform = () => {
   const [steper, setSteper] = useState<number>(3);
   const [alldata, setAllData] = useState<any>({});
+  const dispatch = useDispatch();
+  const addOrderDetail = useSelector((state: any) => state.addoder.SingleOrder);
+  console.log(addOrderDetail);
 
   useEffect(() => {
-    console.log(alldata);
+    try {
+      dispatch(addOrderDetails(alldata));
+    } catch (error) {
+      console.error(error);
+    }
   }, [alldata]);
 
   return (
