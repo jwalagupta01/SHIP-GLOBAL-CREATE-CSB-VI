@@ -9,7 +9,7 @@ import { addOrderDetails } from "@/Redux/HomeData.ts/AddOder";
 import { useSelector, useDispatch } from "react-redux";
 
 const Csbform = () => {
-  const [steper, setSteper] = useState<number>(3);
+  const [steper, setSteper] = useState<number>(1);
   const [alldata, setAllData] = useState<any>({});
   const dispatch = useDispatch();
   const addOrderDetail = useSelector((state: any) => state.addoder.SingleOrder);

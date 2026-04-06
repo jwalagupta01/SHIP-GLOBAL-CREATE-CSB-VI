@@ -55,8 +55,6 @@ export function DropDownComboBox({
             items={list}
             value={field.value}
             onValueChange={(val) => field.onChange(val)}
-            defaultValue={list?.[0]?.[valueKey]}
-            defaultInputValue={list?.[0]?.[valueKey]}
           >
             <ComboboxInput
               placeholder={placeholder}

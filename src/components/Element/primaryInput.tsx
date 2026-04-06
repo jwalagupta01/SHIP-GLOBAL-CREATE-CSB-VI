@@ -72,6 +72,8 @@ export function SecondryInput({
     formState: { errors },
   } = form;
 
+  const error = get(errors, name);
+
   return (
     <Field>
       <FieldLabel htmlFor="input-button-group">
@@ -92,9 +94,7 @@ export function SecondryInput({
           {stxt}
         </Button>
       </ButtonGroup>
-      {errors[name] && (
-        <span className="text-red-500 text-sm">{errors[name].message}</span>
-      )}
+      {error && <span className="text-red-500 text-sm">{error.message}</span>}
     </Field>
   );
 }
@@ -104,13 +104,24 @@ interface geetingsPassProps {
   label: string;
   form: any;
   name: string;
-  showPass: boolean
-  setShowPass: any
+  showPass: boolean;
+  setShowPass: any;
 }
 
-export function PassInput({ type, label, form, name, showPass, setShowPass }: geetingsPassProps) {
+export function PassInput({
+  type,
+  label,
+  form,
+  name,
+  showPass,
+  setShowPass,
+}: geetingsPassProps) {
+  const {
+    register,
+    formState: { errors },
+  } = form;
 
-  const {register, formState: {errors}} = form
+  const error = get(errors, name);
 
   return (
     <div className="flex flex-col w-full gap-y-2">
@@ -124,14 +135,16 @@ export function PassInput({ type, label, form, name, showPass, setShowPass }: ge
           placeholder="Enter Your Password"
           {...register(name)}
         />
-        <p className="absolute top-3 right-5 text-2xl cursor-pointer" onClick={() => {setShowPass(!showPass)}}>
-          {showPass ? (<FaEye />) : (<FaEyeSlash />)}
-          
+        <p
+          className="absolute top-3 right-5 text-2xl cursor-pointer"
+          onClick={() => {
+            setShowPass(!showPass);
+          }}
+        >
+          {showPass ? <FaEye /> : <FaEyeSlash />}
         </p>
       </div>
-      {errors[name] && (
-        <span className="text-sm text-red-500">{errors[name].message}</span>
-      )}
+      {error && <span className="text-sm text-red-500">{error.message}</span>}
     </div>
   );
 }
