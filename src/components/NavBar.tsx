@@ -4,6 +4,7 @@ import { NavProfileIcon } from "./Element/navProfileIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { LuBoxes, LuPackagePlus } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
+import { RxDashboard } from "react-icons/rx";
 import axios from "axios";
 import {
   addProfileDetails,
@@ -15,15 +16,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const balance = useSelector((state: any) => state.profileDetails.balance);
-  const profileDetails = useSelector(
-    (state: any) => state.profileDetails.personalDetail,
-  );
+  // const profileDetails = useSelector(
+  //   (state: any) => state.profileDetails.personalDetail,
+  // );
   const boxRef = useRef<HTMLDivElement | null>(null);
   const token = useSelector((state: any) => state.auth.token);
   const [quickShow, setQuickShow] = useState<boolean>(false);
   const quickAction = [
     { label: "Add Order", to: "/add-order", icon: <LuPackagePlus /> },
-    { label: "Add Multiorder", to: "/add-multibox", icon: <LuBoxes /> },
+    { label: "Add Multiorder", to: "/add-multibox", icon: <RxDashboard /> },
     { label: "Add CSB-v Order", to: "", icon: <LuPackagePlus /> },
     { label: "Rate Calculator", to: "", icon: <LuPackagePlus /> },
   ];

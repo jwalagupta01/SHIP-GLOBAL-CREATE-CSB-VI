@@ -20,6 +20,7 @@ interface geetingsProps {
   name: string;
   form: any;
   label: string;
+  labelDisabled?: boolean;
 }
 
 export function DropDownComboBox({
@@ -30,6 +31,7 @@ export function DropDownComboBox({
   name,
   form,
   label,
+  labelDisabled,
 }: geetingsProps) {
   const {
     control,
@@ -40,9 +42,11 @@ export function DropDownComboBox({
 
   return (
     <div>
-      <label htmlFor="">
-        {label} <span className="text-red-500">*</span>
-      </label>
+      {labelDisabled && (
+        <label htmlFor="">
+          {label} <span className="text-red-500">*</span>
+        </label>
+      )}
       <Controller
         control={control}
         name={name}
@@ -57,9 +61,13 @@ export function DropDownComboBox({
             <ComboboxInput
               placeholder={placeholder}
               className="rounded-md h-11"
+              readOnly
+              style={{ cursor: "pointer" }}
             />
-            <ComboboxContent>
-              <ComboboxEmpty>No items found.</ComboboxEmpty>
+            <ComboboxContent className={`cursor-pointer`}>
+              <ComboboxEmpty className={`cursor-pointer`}>
+                No items found.
+              </ComboboxEmpty>
               <ComboboxList>
                 {(item) => (
                   <ComboboxItem
