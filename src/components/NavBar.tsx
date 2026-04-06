@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { BsStars } from "react-icons/bs";
 import { NavProfileIcon } from "./Element/navProfileIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { LuBoxes, LuPackagePlus } from "react-icons/lu";
+import { LuPackagePlus } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
 import { RxDashboard } from "react-icons/rx";
 import axios from "axios";

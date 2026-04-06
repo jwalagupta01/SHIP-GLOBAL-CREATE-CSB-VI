@@ -11,16 +11,19 @@ interface geetingsBtnProps {
     | "link";
   className: string;
   type?: "submit" | "button" | "reset";
+  [key: string]: any;
 }
 
 export const PrimaryBtn = ({
   text,
   variant,
   className,
-  type = "submit",
+  type,
+  ...rest
 }: geetingsBtnProps) => {
   return (
     <Button
+      {...rest}
       className={`${className} cursor-pointer`}
       variant={variant}
       type={type}

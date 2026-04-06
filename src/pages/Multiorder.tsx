@@ -1,4 +1,3 @@
-import { OrderItemsDetails } from "@/components/itemsDetails";
 import PersonalDeatails from "@/components/PersonalDeatails";
 import SearchCustomer from "@/components/SearchCustomer";
 import ShipmentInfo from "@/components/ShipmentInfo";
@@ -8,6 +7,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 export function Multiorder() {
   const [alldata, setAllData] = useState<object>({});
   const [steper, setSteper] = useState<number>(3);
+  console.log(alldata);
 
   return (
     <div className="w-full h-full pt-20 flex flex-col px-5 gap-y-3 overflow-scroll bg-gray-50">
@@ -40,7 +40,6 @@ export function Multiorder() {
         setSteper={setSteper}
         Multiorder={true}
       />
-      
     </div>
   );
 }

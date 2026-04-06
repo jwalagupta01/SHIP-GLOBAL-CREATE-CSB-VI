@@ -100,7 +100,7 @@ export function DashBoard() {
   }, [selectedDate]);
 
   return (
-    <div className="py-20 w-full h-full px-10">
+    <div className="py-20 w-full h-full px-5 bg-gray-100">
       <div className="flex justify-between items-center">
         <p className="text-2xl font-medium">Dashboard</p>
         <div className="w-50">
@@ -116,7 +116,7 @@ export function DashBoard() {
           />
         </div>
       </div>
-      <div className="bg-white grid grid-cols-5 gap-x-5 mt-5">
+      <div className="bg-white grid grid-cols-5 gap-x-5 mt-2 py-5 px-3 rounded">
         {dashCard.map((items: any, index: number) => (
           <div
             className={`py-3 flex flex-col gap-y-2 items-center justify-center bg-linear-to-b ${items.colorClass} border  to-white rounded cursor-pointer`}
@@ -132,6 +132,10 @@ export function DashBoard() {
             <p className="text-sm font-medium">View</p>
           </div>
         ))}
+      </div>
+      <div className="flex flex-row items-center justify-between mt-5">
+        <div>sdfghjk</div>
+        <div>ertyjk</div>
       </div>
     </div>
   );

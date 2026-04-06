@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { MULTI_ORDER_SCHEMA } from "@/Schema/MultiOrderShema";
 import { OrderItemsDetails } from "./itemsDetails";
+import { MultiorderItemsDetails } from "./MultiOrderItemsDetails";
 
 interface geetingsProps {
   steper: number;
@@ -29,6 +30,7 @@ const ShipmentInfo = ({
   setAllData,
   Multiorder,
 }: geetingsProps) => {
+  // console.log(Multiorder, "sdfgh");
   const [currency, setCurrency] = useState<string[]>([]);
   const [showMultiBoxProduct, setShowMultiBoxProduct] = useState<boolean>(true);
   const token = useSelector((state: any) => state.auth.token);
@@ -89,10 +91,12 @@ const ShipmentInfo = ({
   todayDate.setHours(0, 0, 0, 0);
 
   const formOnSubmit = (data: any): void => {
+    console.log("clicked");
     try {
       if (Multiorder) {
         // setAllData((prev: any) => ({ ...prev, ShipmentData: data }));
         setShowMultiBoxProduct(true);
+        console.log("clicked");
       } else {
         setAllData((prev: any) => ({ ...prev, ShipmentData: data }));
         setSteper(4);
@@ -210,6 +214,7 @@ const ShipmentInfo = ({
               placeholder="Select Currency"
               name="invoice_currency"
               form={ShipmentData}
+              labelDisabled={true}
             />
             {SHIPMENT_DETAILS.map((items: any, index: number) => (
               <PrimaryInput
@@ -235,14 +240,25 @@ const ShipmentInfo = ({
           </div>
           {!Multiorder && (
             <OrderItemsDetails
-              Multiorder={Multiorder}
               ShipmentData={ShipmentData}
-              boxesNo={box_number}
               setShowMultiBoxProduct={setShowMultiBoxProduct}
             />
           )}
           <div className="flex justify-end my-5">
-            <PrimaryBtn
+            {showMultiBoxProduct && Multiorder && (
+              <div>
+                {Array.from({ length: box_number }).map((_, i) => (
+                  <MultiorderItemsDetails
+                    key={i}
+                    ShipmentData={ShipmentData}
+                    boxesNo={box_number}
+                    setShowMultiBoxProduct={setShowMultiBoxProduct}
+                    boxIndex={i}
+                  />
+                ))}
+              </div>
+            )}
+            {/* <PrimaryBtn
               type="submit"
               variant="default"
               className="bg-blue-800 hover:bg-blue-600 px-6 py-5"
@@ -255,27 +271,11 @@ const ShipmentInfo = ({
                   "Continue"
                 )
               }
-            />
+            /> */}
           </div>
         </form>
       ) : (
         ""
-      )}
-      {showMultiBoxProduct && Multiorder && (
-        <div className="absolute top-0 left-0 h-screen w-screen bg-black/30 z-51 flex items-center justify-center">
-          <div className="bg-white rounded-2xl w-4/5 pb-10 max-h-[90vh] overflow-y-auto">
-            {Array.from({ length: box_number }).map((_, i) => (
-              <OrderItemsDetails
-                key={i}
-                Multiorder={Multiorder}
-                ShipmentData={ShipmentData}
-                boxesNo={box_number}
-                setShowMultiBoxProduct={setShowMultiBoxProduct}
-                boxIndex={i}
-              />
-            ))}
-          </div>
-        </div>
       )}
     </div>
   );
