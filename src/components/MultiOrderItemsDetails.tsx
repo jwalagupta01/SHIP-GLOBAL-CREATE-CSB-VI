@@ -22,6 +22,7 @@ interface geetingsProps {
   currentBoxIndex: number;
   setCurrentBoxIndex: (index: number) => void;
   setBoxesDetails: (val: object) => void;
+  boxesDetails: any;
 }
 
 export function MultiorderItemsDetails({
@@ -31,6 +32,7 @@ export function MultiorderItemsDetails({
   currentBoxIndex,
   setCurrentBoxIndex,
   setBoxesDetails,
+  boxesDetails,
 }: geetingsProps) {
   const multiOrderBoxesdetails = useForm({
     mode: "onChange",
@@ -62,18 +64,12 @@ export function MultiorderItemsDetails({
 
   const { handleSubmit } = multiOrderBoxesdetails;
 
-  const onNext = (data: any): void => {
-    console.log(data);
+  const onNext = (data: any) => {
     setBoxesDetails((prev: any) => ({
       ...prev,
-      [`box${currentBoxIndex + 1}`]: {
-        dead_weight: data.Boxes?.[currentBoxIndex]?.dead_weight,
-        pro_length: data.Boxes?.[currentBoxIndex]?.pro_length,
-        pro_breadth: data.Boxes?.[currentBoxIndex]?.pro_breadth,
-        pro_height: data.Boxes?.[currentBoxIndex]?.pro_height,
-        products: data.Boxes?.[currentBoxIndex]?.products || [],
-      },
+      [`box${currentBoxIndex}`]: data,
     }));
+
     if (currentBoxIndex < boxesNo - 1) {
       setCurrentBoxIndex(currentBoxIndex + 1);
     } else {
@@ -109,23 +105,31 @@ export function MultiorderItemsDetails({
   useEffect(() => {
     if (!showMultiBoxProduct) return;
 
-    const currentProducts = multiOrderBoxesdetails.getValues(fieldName);
+    const savedData = boxesDetails[`box${currentBoxIndex}`];
 
-    if (!currentProducts || currentProducts.length === 0) {
-      replace([
-        {
-          item_name: "",
-          item_sku: "",
-          item_hsn: "",
-          item_qty: "",
-          item_unit_price: "",
-          item_igst: "",
-        },
-      ]);
+    if (savedData) {
+      multiOrderBoxesdetails.reset(savedData);
     } else {
-      replace(currentProducts);
+      multiOrderBoxesdetails.reset({
+        dead_weight: "",
+        pro_length: "",
+        pro_breadth: "",
+        pro_height: "",
+        products: [
+          {
+            item_name: "",
+            item_sku: "",
+            item_hsn: "",
+            item_qty: "",
+            item_unit_price: "",
+            item_igst: "0%",
+          },
+        ],
+      });
     }
-  }, [currentBoxIndex]);
+  }, [currentBoxIndex, showMultiBoxProduct]);
+
+  console.log(boxesDetails);
 
   return (
     <Dialog
@@ -171,7 +175,7 @@ export function MultiorderItemsDetails({
                 />
               ))}
             </div>
-            {fields.map((field, index) => (
+            {fields.map((field: any, index: number) => (
               <div key={field.id} className={`relative px-10`}>
                 <div className="grid grid-cols-7 gap-x-3 mt-3 items-center">
                   {SHIPMENT_PRODUCT.map((items: any, idx: number) => (

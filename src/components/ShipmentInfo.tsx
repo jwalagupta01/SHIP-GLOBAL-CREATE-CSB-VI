@@ -208,6 +208,7 @@ const ShipmentInfo = ({
               currentBoxIndex={currentBoxIndex}
               setCurrentBoxIndex={setCurrentBoxIndex}
               setBoxesDetails={setBoxesDetails}
+              boxesDetails={boxesDetails}
             />
           )}
           <div className="flex justify-end py-5">
