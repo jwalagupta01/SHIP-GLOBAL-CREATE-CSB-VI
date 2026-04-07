@@ -108,7 +108,7 @@ const Navbar = () => {
           </p>
           {quickShow && (
             <div
-              className="absolute top-10 right-0 px-8 py-4 flex items-center gap-x-3 bg-white shadow transition-all easy-in-out duration-300 animate-[fadeIn_0.3s_ease-out]"
+              className="absolute rounded-lg top-10 right-0 px-8 py-4 flex items-center gap-x-3 bg-white shadow transition-all easy-in-out duration-300 animate-[fadeIn_0.3s_ease-out]"
               ref={boxRef}
             >
               {quickAction.map((items, index) => (

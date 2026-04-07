@@ -55,6 +55,7 @@ export function DropDownComboBox({
             items={list}
             value={field.value}
             onValueChange={(val) => field.onChange(val)}
+            modal={true}
           >
             <ComboboxInput
               placeholder={placeholder}
@@ -67,15 +68,15 @@ export function DropDownComboBox({
                 No items found.
               </ComboboxEmpty>
               <ComboboxList>
-                {(item) => (
+                {list?.map((item: any) => (
                   <ComboboxItem
                     key={item[valueKey]}
                     value={item[valueKey]}
-                    className="data-highlighted:bg-blue-400/30 cursor-pointer data-highlighted:text-blue-900 **:text-blue-900"
+                    className="cursor-pointer"
                   >
                     {item[labelKey]}
                   </ComboboxItem>
-                )}
+                ))}
               </ComboboxList>
             </ComboboxContent>
           </Combobox>

@@ -4,6 +4,7 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import { PrimaryBtn } from "./Element/PrimaryBtn";
 import { useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 interface geetingsProps {
   alldata: any;
@@ -18,6 +19,9 @@ function ShippingPartner({
   steper,
   setSteper,
 }: geetingsProps) {
+  const token = useSelector((state: any) => state.auth.token);
+  const singleOrder = useSelector((state: any) => state.addoder.SingleOrder);
+  // console.log(singleOrder)
   const shippingPartnerData = useForm({
     mode: "onChange",
   });
@@ -32,48 +36,55 @@ function ShippingPartner({
     }
   }
 
-//   useEffect(() => {
-//     if (!alldata.ShipmentData) return;
-//     const fetchState = async () => {
-//       try {
-//         const res = await axios.post(
-//           "https://qa2.franchise.backend.shipgl.in/api/v1/orders/get-shipper-rates",
-//           {
-//             add_order: {
-//               customer_shipping_postcode: "787878",
-//               customer_shipping_country_code: "AL",
-//               package_weight: 1,
-//               package_length: 10,
-//               package_breadth: 10,
-//               package_height: 10,
-//               csbv: 0,
-//               vendor_order_item: [
-//                 {
-//                   vendor_order_item_id: "id-1775134775411-ud2bu04",
-//                   vendor_order_item_name: "fvdfvf",
-//                   vendor_order_item_sku: "",
-//                   vendor_order_item_quantity: 1,
-//                   vendor_order_item_unit_price: 7,
-//                   vendor_order_item_hsn: "87654321",
-//                   vendor_order_item_tax_rate: "0",
-//                 },
-//               ],
-//               currency_code: "INR",
-//               state_id: "607",
-//             },
-//           },
-//         );
-//         console.log(res);
-//       } catch (error) {
-//         console.error(error);
-//       }
-//     };
-//     fetchState();
-//   }, [alldata]);
+  useEffect(() => {
+    
+    if (!alldata.ShipmentData) return;
+    const fetchState = async () => {
+      const products = singleOrder.ShipmentData.products || [];
+      console.log(products);
+
+      const vendorItems = products.map((item: any, index: number) => ({
+        vendor_order_item_id: `id-${Date.now()}-${index}`,
+        vendor_order_item_name: item.item_name,
+        vendor_order_item_sku: item.item_sku,
+        vendor_order_item_quantity: item.item_qty,
+        vendor_order_item_unit_price: item.item_unit_price,
+        vendor_order_item_hsn: item.item_hsn,
+        vendor_order_item_tax_rate: item.item_igst,
+      }));
+
+      try {
+        const res = await axios.post(
+          "https://qa2.franchise.backend.shipgl.in/api/v1/orders/get-shipper-rates",
+          {
+            customer_shipping_postcode: singleOrder?.personalData?.pinCode,
+            customer_shipping_country_code: singleOrder?.personalData?.country,
+            package_weight: singleOrder?.ShipmentData?.dead_weight,
+            package_length: singleOrder?.ShipmentData?.pro_length,
+            package_breadth: singleOrder?.ShipmentData?.pro_breadth,
+            package_height: singleOrder?.ShipmentData?.pro_height,
+            csbv: 0,
+            vendor_order_item: vendorItems,
+            currency_code: singleOrder?.personalData?.country,
+            state_id: singleOrder?.personalData?.state,
+          },
+          {
+            headers: {
+              Authorization: `bearer ${token}`,
+            },
+          },
+        );
+        console.log(res);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchState();
+  }, [alldata, token]);
 
   return (
     <div className="border border-gray-400 rounded w-full h-auto *:px-4 mb-5">
-      <div className="flex items-center justify-between h-13 border-b border-gray-400">
+      <div className="flex items-center justify-between h-13 border-b border-gray-400 bg-blue-50">
         <div className="flex items-center gap-x-2">
           {Object.keys(alldata?.shippingPartner || {}).length > 0 ? (
             <p className="bg-green-600 px-1 py-1 rounded text-white">
@@ -129,7 +140,7 @@ function ShippingPartner({
                 </p>
               </div>
             </div>
-            <div className="flex justify-end items-end mb-5">
+            <div className="flex justify-end items-end pb-5">
               <PrimaryBtn
                 text="Pay And Order"
                 variant="default"

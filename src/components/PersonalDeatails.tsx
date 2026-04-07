@@ -180,7 +180,7 @@ const PersonalDeatails = ({
                 list={state}
                 fOption="Select State"
                 name="state"
-                valueKey="state_name"
+                valueKey="state_id"
                 labelKey="state_name"
                 form={personalDataForm}
               />
@@ -231,7 +231,7 @@ const PersonalDeatails = ({
                     list={billingstate}
                     fOption="Select State"
                     name="billing_State"
-                    valueKey="state_name"
+                    valueKey="state_id"
                     labelKey="state_name"
                     form={personalDataForm}
                   />

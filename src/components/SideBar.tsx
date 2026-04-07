@@ -12,8 +12,8 @@ import { useState } from "react";
 
 const Sidebar = () => {
   const token = useSelector((state: any) => state.auth.token);
-  const [sidepin, setSidePin] = useState<boolean>(true);
-  const [hovered, setHovered] = useState(true);
+  const [sidepin, setSidePin] = useState<boolean>(false);
+  const [hovered, setHovered] = useState(false);
 
   const sidemenu = [
     { to: "/dashboard", label: "Dashboard", icon: <LuLayoutDashboard /> },
