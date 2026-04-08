@@ -88,7 +88,9 @@ export const personalDataschema = z
 const ProductSchema = z.object({
   item_name: z.string().nonempty("Product name is required"),
   item_sku: z.string().optional(),
-  item_hsn: z.coerce.number().min(8, "HSN must be 8 digits long"),
+  item_hsn: z.coerce.number().refine((val) => val.toString().length === 8, {
+    message: "HSN must be exactly 8 digits",
+  }),
   item_qty: z.coerce.number().min(1, "Quantity must not be Zero"),
   item_unit_price: z.coerce.number().min(1, "Unit Price must not be Zero"),
   item_igst: z.string().nonempty("Select IGST"),

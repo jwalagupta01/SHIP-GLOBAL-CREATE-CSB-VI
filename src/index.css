@@ -12,6 +12,10 @@
   font-optical-sizing: auto;
 }
 
+[cmdk-item] {
+  cursor: pointer !important;
+}
+
 .active {
   /* background-color: #fee685; */
   border: 1px solid orange;

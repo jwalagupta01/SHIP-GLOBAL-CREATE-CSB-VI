@@ -11,7 +11,7 @@ import { PrimaryInput, SecondryInput } from "./Element/primaryInput";
 import { SHIPMENT_PRODUCT, SHIPMENT_SIZE } from "@/mock/arrayshipmentdetails";
 import { DropDownComboBox } from "./Element/DropDownComboBox";
 import { useFieldArray, useForm } from "react-hook-form";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BOXES_DETAILS } from "@/Schema/MultiOrderShema";
 
@@ -38,6 +38,8 @@ export function MultiorderItemsDetails({
   setBoxesDetails,
   boxesDetails,
 }: geetingsProps) {
+  const [dialogContainer, setDialogContainer] =
+    React.useState<HTMLDivElement | null>(null);
   const multiOrderBoxesdetails = useForm({
     mode: "onChange",
     resolver: zodResolver(BOXES_DETAILS),
@@ -125,8 +127,6 @@ export function MultiorderItemsDetails({
     }
   }, [currentBoxIndex, showMultiBoxProduct]);
 
-  console.log(boxesDetails);
-
   return (
     <Dialog
       open={showMultiBoxProduct}
@@ -134,7 +134,11 @@ export function MultiorderItemsDetails({
         setShowMultiBoxProduct(open);
       }}
     >
-      <DialogContent className="sm:max-w-4/5 w-4/5">
+      <DialogContent
+        className="sm:max-w-4/5 w-4/5"
+        aria-describedby={undefined}
+        ref={(node) => setDialogContainer(node)}
+      >
         <DialogHeader>
           <DialogTitle>
             <div className="flex items-center gap-x-3 border-b pb-4">
@@ -151,7 +155,6 @@ export function MultiorderItemsDetails({
             </div>
           </DialogTitle>
         </DialogHeader>
-        {/* <form> */}
         <div>
           <div className={`gap-x-2 grid grid-cols-4 my-3 px-10`}>
             {SHIPMENT_SIZE.map((items: any, index: number) => (
@@ -188,6 +191,7 @@ export function MultiorderItemsDetails({
                   name={`${fieldName}.${index}.item_igst`}
                   form={multiOrderBoxesdetails}
                   labelDisabled={true}
+                  container={dialogContainer}
                 />
                 {index > 0 && (
                   <div className="flex items-center justify-center">

@@ -21,6 +21,7 @@ interface geetingsProps {
   form: any;
   label: string;
   labelDisabled?: boolean;
+  container?: HTMLElement | null;
 }
 
 export function DropDownComboBox({
@@ -32,6 +33,7 @@ export function DropDownComboBox({
   form,
   label,
   labelDisabled,
+  container,
 }: geetingsProps) {
   const {
     control,
@@ -43,7 +45,7 @@ export function DropDownComboBox({
   return (
     <div>
       {labelDisabled && (
-        <label htmlFor="">
+        <label htmlFor={name}>
           {label} <span className="text-red-500">*</span>
         </label>
       )}
@@ -56,17 +58,17 @@ export function DropDownComboBox({
             items={list}
             value={field.value ?? ""}
             onValueChange={(val) => {
-              console.log("Selected value:", val);
               field.onChange(val);
             }}
           >
             <ComboboxInput
+              id={name}
               placeholder={placeholder}
               className="rounded-md h-11"
               readOnly
               style={{ cursor: "pointer" }}
             />
-            <ComboboxContent className={`cursor-pointer`}>
+            <ComboboxContent className={`cursor-pointer`} container={container}>
               <ComboboxEmpty className={`cursor-pointer`}>
                 No items found.
               </ComboboxEmpty>
@@ -75,14 +77,7 @@ export function DropDownComboBox({
                   <ComboboxItem
                     key={item[valueKey]}
                     value={item[valueKey]}
-                    className="cursor-pointer"
-                    onSelect={(currentValue) => {
-                      field.onChange(currentValue);
-                    }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
+                    className="cursor-pointer !!z-[9999] **:cursor-pointer"
                   >
                     {item[labelKey]}
                   </ComboboxItem>
