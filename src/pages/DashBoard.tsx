@@ -140,7 +140,6 @@ export function DashBoard() {
           },
         );
         setDashBoardData(res?.data?.data);
-        // console.log(res?.data?.data);
       } catch (error) {
         console.error(error);
       }
@@ -169,7 +168,6 @@ export function DashBoard() {
     WalletActive();
   }, [token]);
 
-  console.log(walletActive);
   return (
     <div className="py-20 w-full h-full px-5 bg-gray-100 overflow-scroll">
       <div className="flex justify-between items-center">

@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaPlus } from "react-icons/fa6";
 import { ShipmentinfoSchema } from "@/Schema/CsbIVSchemaZod";
-import { PrimaryBtn } from "./Element/PrimaryBtn";
 import { FaCheck, FaRegCopy } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -37,6 +36,7 @@ const ShipmentInfo = ({
     useState<boolean>(false);
   const [currentBoxIndex, setCurrentBoxIndex] = useState<number>(0);
   const [boxesDetails, setBoxesDetails] = useState<any>([]);
+  const [msgShow, setMsgShow] = useState<boolean>(false);
   const token = useSelector((state: any) => state.auth.token);
 
   // react hook form (use Form)
@@ -63,30 +63,47 @@ const ShipmentInfo = ({
           ],
         },
   });
-
   const box_number = Number(ShipmentData.watch("box_number") || 1);
   const watchValue = ShipmentData.watch();
 
   const todayDate = new Date();
   todayDate.setHours(0, 0, 0, 0);
 
-  const isEqual = Object.keys(boxesDetails || {}).length === box_number;
+  const isEqual = (boxesDetails || []).length === box_number;
 
+  useEffect(() => {
+    if (Multiorder) {
+      ShipmentData.setValue("Boxes", boxesDetails, { shouldValidate: true });
+    }
+  }, [boxesDetails]);
+
+  // form On Submit
   const formOnSubmit = (data: any): void => {
-    console.log("clicked");
     try {
       if (Multiorder) {
-        setAllData((prev: any) => ({ ...prev, ShipmentData: data }));
-        setShowMultiBoxProduct(true);
-        console.log("clicked");
+        if (boxesDetails.length !== box_number) {
+          setMsgShow(true);
+          return;
+        }
+
+        const finalData = {
+          ...data,
+          Boxes: boxesDetails,
+        };
+
+        setAllData((prev: any) => ({
+          ...prev,
+          ShipmentData: finalData,
+        }));
+
+        setSteper(4);
       } else {
-        setAllData((prev: any) => ({ ...prev, ShipmentData: data }));
+        setAllData((prev: any) => ({
+          ...prev,
+          ShipmentData: data,
+        }));
         setSteper(4);
       }
-
-      setAllData((prev: any) => ({ ...prev, ShipmentData: data }));
-      setSteper(4);
-      console.log(alldata);
     } catch (error) {
       console.error(error);
     }
@@ -151,10 +168,13 @@ const ShipmentInfo = ({
           </p>
         )}
       </div>
-      {steper == 3 ? (
+      {steper == 3 && (
         <form
           action=""
-          onSubmit={ShipmentData.handleSubmit(formOnSubmit)}
+          onSubmit={(e) => {
+            console.log("PARENT FORM SUBMIT");
+            ShipmentData.handleSubmit(formOnSubmit)(e);
+          }}
           className="bg-white "
         >
           <div className="grid grid-cols-3 gap-x-2 py-3 gap-y-2">
@@ -213,6 +233,7 @@ const ShipmentInfo = ({
               boxesDetails={boxesDetails}
             />
           )}
+
           <div>
             {boxesDetails.map((items: any, index: number) => (
               <div
@@ -269,9 +290,17 @@ const ShipmentInfo = ({
               </div>
             ))}
           </div>
+          {msgShow && (
+            <p className="text-xs text-red-500">
+              Number of Boxes should be equal to Box count
+            </p>
+          )}
           <div className="flex justify-end py-5">
-            {Multiorder && watchValue.invoice_number !== "" && !isEqual ? (
+            {!isEqual &&
+            watchValue.invoice_number !== "" &&
+            boxesDetails.length <= box_number ? (
               <button
+                type="button"
                 className="flex items-center gap-x-2 border px-3 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-600 cursor-pointer"
                 onClick={() => setShowMultiBoxProduct(true)}
               >
@@ -279,23 +308,16 @@ const ShipmentInfo = ({
                 {box_number == 1 ? "Add Box" : "Add Boxes"}
               </button>
             ) : (
-              <PrimaryBtn
-                type="submit"
-                variant="default"
-                className="bg-blue-800 hover:bg-blue-600 px-6 py-5"
-                text={
-                  Multiorder && !isEqual
-                    ? box_number == 1
-                      ? "Add Box"
-                      : "Add Boxes"
-                    : "Continue"
-                }
-              />
+              <button
+                type="button"
+                onClick={(e) => ShipmentData.handleSubmit(formOnSubmit)(e)}
+                className="flex items-center gap-x-2 border px-3 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-600 cursor-pointer"
+              >
+                Continue
+              </button>
             )}
           </div>
         </form>
-      ) : (
-        ""
       )}
     </div>
   );

@@ -44,7 +44,8 @@ export const MULTI_ORDER_SCHEMA = z.object({
     .max(25, "Max Order is 25")
     .default(1),
   Boxes: z
-    .array(BOXES_DETAILS)
-    .min(1, "At least one product is required")
-    .max(25, "Maximux 25 Product add Details"),
+    .array(z.any())
+    .min(1, "At least one box is required")
+    .max(25, "Maximum 25 boxes allowed")
+    .default([]),
 });

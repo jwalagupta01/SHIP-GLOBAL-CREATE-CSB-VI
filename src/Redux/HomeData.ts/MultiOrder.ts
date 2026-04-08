@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  MultiOrderDetails: {},
+  MultiOrderDetails: [],
 };
 
 const MultiOrderSlice = createSlice({
@@ -12,7 +12,7 @@ const MultiOrderSlice = createSlice({
       state.MultiOrderDetails = action.payload;
     },
     deleteMultiOrderDetails: (state) => {
-      state.MultiOrderDetails = {};
+      state.MultiOrderDetails = [];
     },
   },
 });

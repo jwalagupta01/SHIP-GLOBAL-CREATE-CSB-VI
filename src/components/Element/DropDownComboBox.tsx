@@ -76,6 +76,13 @@ export function DropDownComboBox({
                     key={item[valueKey]}
                     value={item[valueKey]}
                     className="cursor-pointer"
+                    onSelect={(currentValue) => {
+                      field.onChange(currentValue);
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
                   >
                     {item[labelKey]}
                   </ComboboxItem>

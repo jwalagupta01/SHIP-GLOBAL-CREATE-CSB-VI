@@ -1,12 +1,20 @@
 import PersonalDeatails from "@/components/PersonalDeatails";
 import SearchCustomer from "@/components/SearchCustomer";
 import ShipmentInfo from "@/components/ShipmentInfo";
-import { useState } from "react";
+import { addMultiOrderDetails } from "@/Redux/HomeData.ts/MultiOrder";
+import { useEffect, useState } from "react";
 import { MdArrowForwardIos } from "react-icons/md";
+import { useDispatch } from "react-redux";
 
 export function Multiorder() {
   const [alldata, setAllData] = useState<object>({});
   const [steper, setSteper] = useState<number>(3);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(addMultiOrderDetails(alldata));
+  }, [alldata]);
+
   console.log(alldata);
 
   return (

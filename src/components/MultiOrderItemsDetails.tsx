@@ -101,7 +101,7 @@ export function MultiorderItemsDetails({
   useEffect(() => {
     if (!showMultiBoxProduct) return;
 
-    const savedData = boxesDetails[`box${currentBoxIndex}`];
+    const savedData = boxesDetails[currentBoxIndex];
 
     if (savedData) {
       multiOrderBoxesdetails.reset(savedData);
@@ -151,117 +151,123 @@ export function MultiorderItemsDetails({
             </div>
           </DialogTitle>
         </DialogHeader>
-        <form>
-          <div>
-            <div className={`gap-x-2 grid grid-cols-4 my-3 px-10`}>
-              {SHIPMENT_SIZE.map((items: any, index: number) => (
-                <SecondryInput
-                  placeholder={items.placeholder}
-                  stxt={items.stxt}
-                  label={items.label}
-                  key={index}
-                  form={multiOrderBoxesdetails}
-                  name={items.name}
-                />
-              ))}
-            </div>
-            {fields.map((field: any, index: number) => (
-              <div key={field.id} className={`relative px-10`}>
-                <div className="grid grid-cols-7 gap-x-3 mt-3 items-center">
-                  {SHIPMENT_PRODUCT.map((items: any, idx: number) => (
-                    <PrimaryInput
-                      placeholder={items.placeholder}
-                      label={items.label}
-                      type={items.type}
-                      name={`${fieldName}.${index}.${items.name}`}
-                      form={multiOrderBoxesdetails}
-                      isRequired={items.isRequired}
-                      key={idx}
-                    />
-                  ))}
-                  <DropDownComboBox
-                    valueKey="percentage"
-                    labelKey="percentage"
-                    label="Select IGST"
-                    list={IGST}
-                    placeholder="Select IGST"
-                    name={`${fieldName}.${index}.item_igst`}
-                    form={multiOrderBoxesdetails}
-                    labelDisabled={true}
-                  />
-                  {index > 0 && (
-                    <div className="flex items-center justify-center">
-                      <button
-                        type="button"
-                        onClick={() => remove(index)}
-                        className="mt-4 cursor-pointer text-red-500 hover:text-blue-600 text-2xl"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
+        {/* <form> */}
+        <div>
+          <div className={`gap-x-2 grid grid-cols-4 my-3 px-10`}>
+            {SHIPMENT_SIZE.map((items: any, index: number) => (
+              <SecondryInput
+                placeholder={items.placeholder}
+                stxt={items.stxt}
+                label={items.label}
+                key={index}
+                form={multiOrderBoxesdetails}
+                name={items.name}
+              />
             ))}
-            <div className={`my-3 flex justify-between px-10`}>
-              <p
-                className="flex items-center gap-x-1 text-blue-600 font-semibold cursor-pointer"
-                onClick={() =>
-                  append({
-                    item_name: "",
-                    item_sku: "",
-                    item_hsn: "",
-                    item_qty: "",
-                    item_unit_price: "",
-                    item_igst: "0%",
-                  })
-                }
-              >
-                <FaPlus />
-                <span>ADD ANOTHER PRODUCT</span>
-              </p>
-              <p className="font-bold text-xl">Total Price : INR 0.00</p>
-            </div>
-            <div className="flex justify-between px-10">
-              <div>
-                {currentBoxIndex !== 0 && (
-                  <PrimaryBtn
-                    type="button"
-                    variant="default"
-                    className="border border-blue-800 bg-neutral-50 px-6 py-5 text-blue-800"
-                    onClick={handlePrevious}
-                    text={
-                      <>
-                        <IoArrowBackOutline />
-                        Previous
-                      </>
-                    }
+          </div>
+          {fields.map((field: any, index: number) => (
+            <div key={field.id} className={`relative px-10`}>
+              <div className="grid grid-cols-7 gap-x-3 mt-3 items-center">
+                {SHIPMENT_PRODUCT.map((items: any, idx: number) => (
+                  <PrimaryInput
+                    placeholder={items.placeholder}
+                    label={items.label}
+                    type={items.type}
+                    name={`${fieldName}.${index}.${items.name}`}
+                    form={multiOrderBoxesdetails}
+                    isRequired={items.isRequired}
+                    key={idx}
                   />
+                ))}
+                <DropDownComboBox
+                  valueKey="percentage"
+                  labelKey="percentage"
+                  label="Select IGST"
+                  list={IGST}
+                  placeholder="Select IGST"
+                  name={`${fieldName}.${index}.item_igst`}
+                  form={multiOrderBoxesdetails}
+                  labelDisabled={true}
+                />
+                {index > 0 && (
+                  <div className="flex items-center justify-center">
+                    <button
+                      type="button"
+                      onClick={() => remove(index)}
+                      className="mt-4 cursor-pointer text-red-500 hover:text-blue-600 text-2xl"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
                 )}
               </div>
-              <div className="flex gap-x-3 items-end">
+            </div>
+          ))}
+          <div className={`my-3 flex justify-between px-10`}>
+            <p
+              className="flex items-center gap-x-1 text-blue-600 font-semibold cursor-pointer"
+              onClick={() =>
+                append({
+                  item_name: "",
+                  item_sku: "",
+                  item_hsn: "",
+                  item_qty: "",
+                  item_unit_price: "",
+                  item_igst: "0%",
+                })
+              }
+            >
+              <FaPlus />
+              <span>ADD ANOTHER PRODUCT</span>
+            </p>
+            <p className="font-bold text-xl">Total Price : INR 0.00</p>
+          </div>
+          <div className="flex justify-between px-10">
+            <div>
+              {currentBoxIndex !== 0 && (
                 <PrimaryBtn
-                  type="submit"
+                  type="button"
                   variant="default"
                   className="border border-blue-800 bg-neutral-50 px-6 py-5 text-blue-800"
-                  text="Save & Close"
-                  onClick={handleSubmit(onClose)}
-                />
-                <PrimaryBtn
-                  type="submit"
-                  variant="default"
-                  className="bg-blue-800 hover:bg-blue-600 px-6 py-5"
-                  onClick={handleSubmit(onNext)}
+                  onClick={handlePrevious}
                   text={
-                    currentBoxIndex === boxesNo - 1
-                      ? "Save & Finish"
-                      : "Save & Next"
+                    <>
+                      <IoArrowBackOutline />
+                      Previous
+                    </>
                   }
                 />
-              </div>
+              )}
+            </div>
+            <div className="flex gap-x-3 items-end">
+              <PrimaryBtn
+                type="button"
+                variant="default"
+                className="border border-blue-800 bg-neutral-50 px-6 py-5 text-blue-800"
+                text="Save & Close"
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  handleSubmit(onClose)(e);
+                }}
+              />
+              <PrimaryBtn
+                type="button"
+                variant="default"
+                className="bg-blue-800 hover:bg-blue-600 px-6 py-5"
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  handleSubmit(onNext)(e);
+                }}
+                text={
+                  currentBoxIndex === boxesNo - 1
+                    ? "Save & Finish"
+                    : "Save & Next"
+                }
+              />
             </div>
           </div>
-        </form>
+        </div>
+        {/* </form> */}
       </DialogContent>
     </Dialog>
   );

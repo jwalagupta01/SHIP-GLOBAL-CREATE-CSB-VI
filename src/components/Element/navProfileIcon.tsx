@@ -20,10 +20,19 @@ export function NavProfileIcon() {
           lk
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="min-w-80">
         <DropdownMenuGroup>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <DropdownMenuItem className="flex flex-row gap-x-3">
+            <div className="h-10 w-10 rounded-full bg-pink-500 flex items-center justify-center text-2xl text-white hover:text-white">
+              lk
+            </div>
+            <div>
+              <p></p>
+              <p></p>
+              <p></p>
+            </div>
+          </DropdownMenuItem>
           <DropdownMenuItem>Billing</DropdownMenuItem>
           <DropdownMenuItem>Settings</DropdownMenuItem>
         </DropdownMenuGroup>
