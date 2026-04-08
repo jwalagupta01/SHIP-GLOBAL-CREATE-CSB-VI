@@ -34,7 +34,7 @@ const ShipmentInfo = ({
   const [showMultiBoxProduct, setShowMultiBoxProduct] =
     useState<boolean>(false);
   const [currentBoxIndex, setCurrentBoxIndex] = useState<number>(0);
-  const [boxesDetails, setBoxesDetails] = useState<any>({});
+  const [boxesDetails, setBoxesDetails] = useState<any>([]);
   const token = useSelector((state: any) => state.auth.token);
 
   // react hook form (use Form)

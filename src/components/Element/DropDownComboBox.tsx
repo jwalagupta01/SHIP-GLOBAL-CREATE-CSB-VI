@@ -50,12 +50,15 @@ export function DropDownComboBox({
       <Controller
         control={control}
         name={name}
+        defaultValue=""
         render={({ field }) => (
           <Combobox
             items={list}
-            value={field.value}
-            onValueChange={(val) => field.onChange(val)}
-            modal={true}
+            value={field.value ?? ""}
+            onValueChange={(val) => {
+              console.log("Selected value:", val);
+              field.onChange(val);
+            }}
           >
             <ComboboxInput
               placeholder={placeholder}

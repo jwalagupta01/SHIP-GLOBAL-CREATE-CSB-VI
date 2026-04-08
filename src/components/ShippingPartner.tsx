@@ -37,7 +37,6 @@ function ShippingPartner({
   }
 
   useEffect(() => {
-    
     if (!alldata.ShipmentData) return;
     const fetchState = async () => {
       const products = singleOrder.ShipmentData.products || [];

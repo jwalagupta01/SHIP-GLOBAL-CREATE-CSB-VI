@@ -25,6 +25,10 @@ interface geetingsProps {
   boxesDetails: any;
 }
 
+const IGST = ["0%", "0.25%", "3%", "5%", "12%", "18%", "28%"].map(
+  (percentage: string) => ({ percentage }),
+);
+
 export function MultiorderItemsDetails({
   boxesNo,
   setShowMultiBoxProduct,
@@ -57,7 +61,7 @@ export function MultiorderItemsDetails({
 
   const fieldName = `products`;
 
-  const { fields, append, remove, replace } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control: multiOrderBoxesdetails.control,
     name: fieldName,
   });
@@ -81,20 +85,10 @@ export function MultiorderItemsDetails({
     console.log(data);
     setBoxesDetails((prev: any) => ({
       ...prev,
-      [`box${currentBoxIndex + 1}`]: {
-        dead_weight: data.Boxes?.[currentBoxIndex]?.dead_weight,
-        pro_length: data.Boxes?.[currentBoxIndex]?.pro_length,
-        pro_breadth: data.Boxes?.[currentBoxIndex]?.pro_breadth,
-        pro_height: data.Boxes?.[currentBoxIndex]?.pro_height,
-        products: data.Boxes?.[currentBoxIndex]?.products || [],
-      },
+      [`box${currentBoxIndex}`]: data,
     }));
     setShowMultiBoxProduct(false);
   };
-
-  const IGST = ["0%", "0.25%", "3%", "5%", "12%", "18%", "28%"].map(
-    (percentage: string) => ({ percentage }),
-  );
 
   const handlePrevious = () => {
     if (currentBoxIndex > 0) {
@@ -140,10 +134,9 @@ export function MultiorderItemsDetails({
     >
       <DialogContent
         className="sm:max-w-4/5 w-4/5"
-        key={currentBoxIndex}
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onInteractOutside={(e) => e.preventDefault()}
-        onFocusOutside={(e) => e.preventDefault()}
+        // onPointerDownOutside={(e) => e.preventDefault()}
+        // onInteractOutside={(e) => e.preventDefault()}
+        // onFocusOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
           <DialogTitle>
