@@ -69,10 +69,11 @@ export function MultiorderItemsDetails({
   const { handleSubmit } = multiOrderBoxesdetails;
 
   const onNext = (data: any) => {
-    setBoxesDetails((prev: any) => ({
-      ...prev,
-      [`box${currentBoxIndex}`]: data,
-    }));
+    setBoxesDetails((prev: any[]) => {
+      const updated = [...(prev || [])];
+      updated[currentBoxIndex] = data;
+      return updated;
+    });
 
     if (currentBoxIndex < boxesNo - 1) {
       setCurrentBoxIndex(currentBoxIndex + 1);
@@ -83,10 +84,11 @@ export function MultiorderItemsDetails({
 
   const onClose = (data: any): void => {
     console.log(data);
-    setBoxesDetails((prev: any) => ({
-      ...prev,
-      [`box${currentBoxIndex}`]: data,
-    }));
+    setBoxesDetails((prev: any[]) => {
+      const updated = [...(prev || [])];
+      updated[currentBoxIndex] = data;
+      return updated;
+    });
     setShowMultiBoxProduct(false);
   };
 
@@ -132,12 +134,7 @@ export function MultiorderItemsDetails({
         setShowMultiBoxProduct(open);
       }}
     >
-      <DialogContent
-        className="sm:max-w-4/5 w-4/5"
-        // onPointerDownOutside={(e) => e.preventDefault()}
-        // onInteractOutside={(e) => e.preventDefault()}
-        // onFocusOutside={(e) => e.preventDefault()}
-      >
+      <DialogContent className="sm:max-w-4/5 w-4/5">
         <DialogHeader>
           <DialogTitle>
             <div className="flex items-center gap-x-3 border-b pb-4">

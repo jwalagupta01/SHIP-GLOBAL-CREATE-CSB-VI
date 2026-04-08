@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { FaCheck } from "react-icons/fa";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { PrimaryBtn } from "./Element/PrimaryBtn";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -20,8 +20,7 @@ function ShippingPartner({
   setSteper,
 }: geetingsProps) {
   const token = useSelector((state: any) => state.auth.token);
-  const singleOrder = useSelector((state: any) => state.addoder.SingleOrder);
-  // console.log(singleOrder)
+  const [shiperRates, setShiperRates] = useState<any>({});
   const shippingPartnerData = useForm({
     mode: "onChange",
   });
@@ -38,8 +37,9 @@ function ShippingPartner({
 
   useEffect(() => {
     if (!alldata.ShipmentData) return;
+    if (!alldata?.ShipmentData?.products) return;
     const fetchState = async () => {
-      const products = singleOrder.ShipmentData.products || [];
+      const products = alldata.ShipmentData.products || [];
       console.log(products);
 
       const vendorItems = products.map((item: any, index: number) => ({
@@ -56,16 +56,16 @@ function ShippingPartner({
         const res = await axios.post(
           "https://qa2.franchise.backend.shipgl.in/api/v1/orders/get-shipper-rates",
           {
-            customer_shipping_postcode: singleOrder?.personalData?.pinCode,
-            customer_shipping_country_code: singleOrder?.personalData?.country,
-            package_weight: singleOrder?.ShipmentData?.dead_weight,
-            package_length: singleOrder?.ShipmentData?.pro_length,
-            package_breadth: singleOrder?.ShipmentData?.pro_breadth,
-            package_height: singleOrder?.ShipmentData?.pro_height,
+            customer_shipping_postcode: alldata?.personalData?.pinCode,
+            customer_shipping_country_code: alldata?.personalData?.country,
+            package_weight: alldata?.ShipmentData?.dead_weight,
+            package_length: alldata?.ShipmentData?.pro_length,
+            package_breadth: alldata?.ShipmentData?.pro_breadth,
+            package_height: alldata?.ShipmentData?.pro_height,
             csbv: 0,
             vendor_order_item: vendorItems,
-            currency_code: singleOrder?.personalData?.country,
-            state_id: singleOrder?.personalData?.state,
+            currency_code: alldata?.personalData?.country,
+            state_id: alldata?.personalData?.state,
           },
           {
             headers: {
@@ -73,13 +73,16 @@ function ShippingPartner({
             },
           },
         );
-        console.log(res);
+        console.log(res?.data?.data);
+        setShiperRates(res?.data?.data);
       } catch (error) {
         console.error(error);
       }
     };
     fetchState();
   }, [alldata, token]);
+
+  console.log(shiperRates);
 
   return (
     <div className="border border-gray-400 rounded w-full h-auto *:px-4 mb-5">
@@ -107,38 +110,51 @@ function ShippingPartner({
           <div className="bg-white">
             <div className="flex items-center justify-center gap-x-5 py-10">
               <div className="flex flex-col border w-auto px-5 py-2 items-center rounded-lg bg-gray-100/50">
-                <p className="font-semibold text-gray-600">1 KG</p>
+                <p className="font-semibold text-gray-600">
+                  {shiperRates?.package_weight / 1000} KG
+                </p>
                 <p className="text-xs text-gray-600">Dead Weight</p>
               </div>
               <div className="flex flex-col border w-auto px-5 py-2 items-center rounded-lg bg-gray-100/50">
-                <p className="font-semibold text-gray-600">0.016 KG</p>
+                <p className="font-semibold text-gray-600">
+                  {shiperRates?.volume_weight / 1000} KG
+                </p>
                 <p className="text-xs text-gray-600">Volumetric Weight</p>
               </div>
-              <div className="flex flex-col border w-auto px-5 py-2 items-center rounded-lg bg-gray-100/50">
-                <p className="font-semibold text-gray-600">1 KG</p>
-                <p className="text-xs text-gray-600">Billed Weight</p>
+              <div className="flex flex-col border border-orange-400 text-orange-400 w-auto px-5 py-2 items-center rounded-lg bg-orange-400/20">
+                <p className="font-semibold">
+                  {shiperRates?.bill_weight / 1000} KG
+                </p>
+                <p className="text-xs">Billed Weight</p>
               </div>
             </div>
-            <p className="font-bold my-5">Showing 3 Results</p>
+            <p className="font-bold my-5">
+              Showing {shiperRates.length} Results
+            </p>
             <div className="border border-gray-400 rounded flex justify-between items-center px-8 py-3 bg-gray-100">
               <p>Courier Partner</p>
               <p>Delivery Time</p>
               <p>Shipment Rate</p>
               <p>Select</p>
             </div>
-            <div className="border border-gray-400 my-4 rounded">
-              <p className="bg-blue-200/50 text-red-500 px-5 text-sm">
-                Duties will be charged, if applicable.
-              </p>
-              <div className="flex justify-between items-center px-8 py-5">
-                <p>Fedex</p>
-                <p>4 - 7 Days</p>
-                <p>Rs. 8,525</p>
-                <p>
-                  <IoIosCheckmarkCircle />
+            {shiperRates?.rate?.map((items: any, index: number) => (
+              <div
+                className="border border-gray-400 my-4 rounded cursor-pointer"
+                key={index}
+              >
+                <p className="bg-blue-200/50 text-red-500 px-5 text-sm">
+                  Duties will be charged, if applicable.
                 </p>
+                <div className="flex justify-between items-center px-8 py-5">
+                  <p className="w-20 h-10">{items.display_name}</p>
+                  <p>{items.transit_time}</p>
+                  <p>Rs. {items.rate}</p>
+                  <p>
+                    <IoIosCheckmarkCircle />
+                  </p>
+                </div>
               </div>
-            </div>
+            ))}
             <div className="flex justify-end items-end pb-5">
               <PrimaryBtn
                 text="Pay And Order"

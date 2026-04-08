@@ -7,13 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FaPlus } from "react-icons/fa6";
 import { ShipmentinfoSchema } from "@/Schema/CsbIVSchemaZod";
 import { PrimaryBtn } from "./Element/PrimaryBtn";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck, FaRegCopy } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { MULTI_ORDER_SCHEMA } from "@/Schema/MultiOrderShema";
 import { OrderItemsDetails } from "./itemsDetails";
 import { MultiorderItemsDetails } from "./MultiOrderItemsDetails";
+import { BiMoneyWithdraw } from "react-icons/bi";
+import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
 
 interface geetingsProps {
   steper: number;
@@ -142,7 +144,7 @@ const ShipmentInfo = ({
         </div>
         {Object.keys(alldata?.ShipmentData || {}).length > 0 && (
           <p
-            className="text-blue-700 underline font-semibold"
+            className="text-blue-700 underline font-semibold cursor-pointer"
             onClick={change_click}
           >
             Change
@@ -211,6 +213,62 @@ const ShipmentInfo = ({
               boxesDetails={boxesDetails}
             />
           )}
+          <div>
+            {boxesDetails.map((items: any, index: number) => (
+              <div
+                className="my-4 border rounded-lg px-5 py-3 cursor-pointer"
+                key={index}
+              >
+                <div className="flex items-center justify-between *:text-xl">
+                  <div className="flex gap-x-3 items-center">
+                    <p className="font-normal text-gray-500">
+                      <BiMoneyWithdraw />
+                    </p>
+                    <p className="font-semibold">Box {index + 1}</p>
+                    <p className="text-xs font-light text-blue-400">Expand</p>
+                  </div>
+                  <div className="flex items-center gap-x-3 text-gray-500">
+                    <p>
+                      <MdOutlineModeEdit />
+                    </p>
+                    <p>
+                      <MdDeleteOutline />
+                    </p>
+                    <p>
+                      <FaRegCopy />
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mt-4 px-13 text-xs text-gray-500">
+                  <p className="">
+                    Dimensions (in cm):{" "}
+                    <span className="text-lg text-gray-700 font-semibold">
+                      {items.pro_height} x {items.pro_breadth} x
+                      {items.pro_length}
+                    </span>
+                  </p>
+                  <p>
+                    Billed Wt:{" "}
+                    <span className="text-lg text-gray-700 font-semibold">
+                      {items.dead_weight}
+                    </span>
+                  </p>
+                  <p>
+                    Product Count:{" "}
+                    <span className="text-lg text-gray-700 font-semibold">
+                      1
+                    </span>
+                  </p>
+                  <p>
+                    Total Price:{" "}
+                    <span className="text-lg text-gray-700 font-semibold">
+                      EUR 15.00
+                    </span>
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
           <div className="flex justify-end py-5">
             {Multiorder && watchValue.invoice_number !== "" && !isEqual ? (
               <button
