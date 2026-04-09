@@ -6,7 +6,6 @@ import { useFieldArray } from "react-hook-form";
 
 interface geetingsProps {
   ShipmentData: any;
-  setShowMultiBoxProduct: any;
 }
 
 export function OrderItemsDetails({ ShipmentData }: geetingsProps) {

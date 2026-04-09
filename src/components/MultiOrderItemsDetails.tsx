@@ -22,7 +22,7 @@ interface geetingsProps {
   showMultiBoxProduct: boolean;
   currentBoxIndex: number;
   setCurrentBoxIndex: (index: number) => void;
-  setBoxesDetails: (val: object) => void;
+  setBoxesDetails: (val: string[]) => void;
   boxesDetails: any;
 }
 
@@ -63,6 +63,20 @@ export function MultiorderItemsDetails({
   });
 
   const fieldName = `products`;
+
+  const watchProducts = multiOrderBoxesdetails.watch("products");
+  const totals = watchProducts?.reduce(
+    (acc: any, p: any) => {
+      const qty = Number(p.item_qty || 0);
+      const price = Number(p.item_unit_price || 0);
+
+      acc.totalQty += qty;
+      acc.totalAmount += qty * price;
+
+      return acc;
+    },
+    { totalQty: 0, totalAmount: 0 },
+  );
 
   const { fields, append, remove } = useFieldArray({
     control: multiOrderBoxesdetails.control,
@@ -227,7 +241,9 @@ export function MultiorderItemsDetails({
               <FaPlus />
               <span>ADD ANOTHER PRODUCT</span>
             </p>
-            <p className="font-bold text-xl">Total Price : INR 0.00</p>
+            <p className="font-bold text-xl">
+              Total: {totals?.totalQty} Price | INR {totals?.totalAmount}
+            </p>
           </div>
           <div className="flex justify-between px-10">
             <div>
