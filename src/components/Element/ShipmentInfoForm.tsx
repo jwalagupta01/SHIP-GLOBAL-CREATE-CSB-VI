@@ -24,6 +24,17 @@ export function ShipmentinfoboxDe({
   setShowMultiBoxProduct,
 }: geetingsProps) {
   const [expandedBox, setExpandedBox] = useState<number | "all" | null>(null);
+//   const [productslist, setProductList] = useState<any[]>([]);
+
+  const ProductItemsUL = [
+    "Sr No.",
+    "Product",
+    "SKU",
+    "HSN",
+    "Qty",
+    "Unit Price",
+    "Total",
+  ];
 
   // Delete box
   const handelDeleteBox = (indexToDelete: number) => {
@@ -160,24 +171,22 @@ export function ShipmentinfoboxDe({
             </div>
           </div>
           {(expandedBox === "all" || expandedBox === index) && (
-            <div className="py-2 text-gray-500">
-              <div className="flex items-center justify-between *:text-xs *:font-light">
-                <p className="w-[5%]">Sr No.</p>
-                <p className="w-[25%]">Product</p>
-                <p className="w-[15%]">SKU</p>
-                <p className="w-[10%]">HSN</p>
-                <p className="w-[10%] text-center">Qty</p>
-                <p className="w-[15%]">Unit Price</p>
-                <p className="w-[20%]">Total</p>
+            <div className="py-2 text-gray-500 flex flex-col gap-y-3">
+              <div className=" grid grid-cols-[1fr_2fr_1.2fr_1fr_0.8fr_1.5fr_1.5fr] *:text-xs *:font-light">
+                {ProductItemsUL.map((items: string, index: number) => (
+                  <p className="w-[5%]" key={index}>
+                    {items}
+                  </p>
+                ))}
               </div>
               {items.products.map((items: any, index: number) => (
-                <div className="flex items-center justify-between *:text-xs *:font-light">
-                  <p className="w-[5%]">{index + 1}.</p>
-                  <p className="w-[25%]">{items.item_name}</p>
-                  <p className="w-[15%]">{items.item_sku}</p>
-                  <p className="w-[10%]">{items.item_hsn}</p>
-                  <p className="w-[10%] text-center">{items.item_qty}</p>
-                  <p className="w-[15%]">
+                <div className=" grid grid-cols-[1fr_2fr_1.2fr_1fr_0.8fr_1.5fr_1.5fr] *:text-xs *:font-light">
+                  <p>{index + 1}.</p>
+                  <p>{items.item_name}</p>
+                  <p>{items.item_sku}</p>
+                  <p>{items.item_hsn}</p>
+                  <p>{items.item_qty}</p>
+                  <p>
                     {watchValue.invoice_currency} {items.item_unit_price}
                   </p>
                   <p className="w-[20%]">
