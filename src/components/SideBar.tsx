@@ -34,7 +34,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`w-auto pt-25 h-full relative shadow-2xl bg-white border-e py-5 px-4 transition-all duration-500 ease-in-out ${isExpanded ? "max-w-[240px]" : "max-w-[70px]"}`}
+      className={`w-auto pt-25 h-full relative shadow-2xl bg-white border-e py-5 px-4 transition-all duration-500 ease-in-out ${isExpanded ? "max-w-100" : "max-w-22"}`}
       onMouseEnter={() => {
         setHovered(true);
       }}

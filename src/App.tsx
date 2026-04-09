@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { DashBoard } from "./pages/DashBoard";
 import { Multiorder } from "./pages/Multiorder";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const token = useSelector((state: any) => state.auth.token);
@@ -21,6 +22,7 @@ const App = () => {
   return (
     <div className="flex flex-col h-screen w-screen bg-white relative">
       <NavBar />
+      <ToastContainer theme="dark" />
       <div className="flex h-screen w-screen flex-row justify-between">
         <Sidebar />
         <Routes>
@@ -31,7 +33,6 @@ const App = () => {
           <Route path="/add-multibox" element={<Multiorder />} />
         </Routes>
       </div>
-      
     </div>
   );
 };

@@ -15,6 +15,7 @@ import { OrderItemsDetails } from "./itemsDetails";
 import { MultiorderItemsDetails } from "./MultiOrderItemsDetails";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
+import { toast } from "react-toastify";
 
 interface geetingsProps {
   steper: number;
@@ -142,6 +143,35 @@ const ShipmentInfo = ({
     FetchCurrency();
   }, []);
 
+  // Delete box
+  const handelDeleteBox = (indexToDelete: number) => {
+    setBoxesDetails((prev: any[]) =>
+      prev.filter((_, index) => index !== indexToDelete),
+    );
+    toast.error(`Box ${indexToDelete + 1} Deleted`);
+  };
+
+  // copy Box
+  const handelCopybtn = (indexToCopy: number) => {
+    setBoxesDetails((prev: any[]) => {
+      if (prev.length >= box_number) {
+        setMsgShow(true);
+        return prev;
+      }
+      const copiedBox = { ...prev[indexToCopy] };
+      const updated = [...prev];
+      updated.splice(indexToCopy + 1, 0, copiedBox);
+      return updated;
+    });
+    toast.success(`Box ${indexToCopy + 1} Copied`);
+  };
+
+  // Edit Box
+  const handelEditBox = (indexToEdit: number) => {
+    setCurrentBoxIndex(indexToEdit);
+    setShowMultiBoxProduct(true);
+  };
+
   return (
     <div className="border border-gray-400 *:px-4 rounded">
       <div className="h-13 flex items-center justify-between border-b border-gray-400 bg-blue-50">
@@ -248,16 +278,33 @@ const ShipmentInfo = ({
                     <p className="font-semibold">Box {index + 1}</p>
                     <p className="text-xs font-light text-blue-400">Expand</p>
                   </div>
-                  <div className="flex items-center gap-x-3 text-gray-500">
-                    <p>
+                  <div className="flex items-center gap-x-3 text-blue-700 cursor-pointer *:hover:text-red-500">
+                    <p
+                      onClick={() => {
+                        handelEditBox(index);
+                      }}
+                    >
                       <MdOutlineModeEdit />
                     </p>
-                    <p>
-                      <MdDeleteOutline />
-                    </p>
-                    <p>
-                      <FaRegCopy />
-                    </p>
+                    {box_number > boxesDetails.length && (
+                      <p
+                        onClick={() => {
+                          handelCopybtn(index);
+                        }}
+                      >
+                        <FaRegCopy />
+                      </p>
+                    )}
+                    {boxesDetails.length !== 1 && (
+                      <p
+                        onClick={() => {
+                          handelDeleteBox(index);
+                        }}
+                        className=""
+                      >
+                        <MdDeleteOutline />
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center justify-between mt-4 px-13 text-xs text-gray-500">
@@ -277,7 +324,7 @@ const ShipmentInfo = ({
                   <p>
                     Product Count:{" "}
                     <span className="text-lg text-gray-700 font-semibold">
-                      1
+                      {items.products.length}
                     </span>
                   </p>
                   <p>
@@ -292,7 +339,7 @@ const ShipmentInfo = ({
           </div>
           {msgShow && (
             <p className="text-xs text-red-500">
-              Number of Boxes should be equal to Box count
+              Number of Boxes should be equal to number Box count
             </p>
           )}
           <div className="flex justify-end py-5">

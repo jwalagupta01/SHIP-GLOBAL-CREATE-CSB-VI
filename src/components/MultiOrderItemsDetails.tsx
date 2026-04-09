@@ -14,6 +14,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import React, { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BOXES_DETAILS } from "@/Schema/MultiOrderShema";
+import { toast } from "react-toastify";
 
 interface geetingsProps {
   boxesNo: number;
@@ -76,6 +77,7 @@ export function MultiorderItemsDetails({
       updated[currentBoxIndex] = data;
       return updated;
     });
+    toast.success("Box Add SuccessFully");
 
     if (currentBoxIndex < boxesNo - 1) {
       setCurrentBoxIndex(currentBoxIndex + 1);
@@ -85,12 +87,13 @@ export function MultiorderItemsDetails({
   };
 
   const onClose = (data: any): void => {
-    console.log(data);
+    // console.log(data);
     setBoxesDetails((prev: any[]) => {
       const updated = [...(prev || [])];
       updated[currentBoxIndex] = data;
       return updated;
     });
+    toast.success("Box Add SuccessFully");
     setShowMultiBoxProduct(false);
   };
 
