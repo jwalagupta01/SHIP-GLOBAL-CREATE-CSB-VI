@@ -22,7 +22,7 @@ interface geetingsProps {
   showMultiBoxProduct: boolean;
   currentBoxIndex: number;
   setCurrentBoxIndex: (index: number) => void;
-  setBoxesDetails: (val: string[]) => void;
+  setBoxesDetails: (val: any) => void;
   boxesDetails: any;
 }
 
@@ -101,8 +101,7 @@ export function MultiorderItemsDetails({
   };
 
   const onClose = (data: any): void => {
-    // console.log(data);
-    setBoxesDetails((prev: any[]) => {
+    setBoxesDetails((prev: any) => {
       const updated = [...(prev || [])];
       updated[currentBoxIndex] = data;
       return updated;
