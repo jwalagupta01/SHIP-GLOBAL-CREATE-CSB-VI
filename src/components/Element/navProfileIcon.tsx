@@ -8,8 +8,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { removeToken } from "@/Redux/HomeData.ts/TokenSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export function NavProfileIcon() {
+  const navigate = useNavigate();
+  const profileDetails = useSelector(
+    (state: any) => state?.profileDetails?.personalDetail,
+  );
+  const dispatch = useDispatch();
+
+  // Logout click
+  const Logout = async () => {
+    try {
+      dispatch(removeToken());
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -17,20 +36,22 @@ export function NavProfileIcon() {
           variant="default"
           className="rounded-full w-10 h-10 cursor-pointer bg-pink-500 text-white text-lg hover:bg-pink-500 hover:text-white border-none"
         >
-          lk
+          {profileDetails.firstname?.charAt(0).toUpperCase()}
+          {profileDetails.lastname?.charAt(0).toUpperCase()}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-80">
+      <DropdownMenuContent className="min-w-80 *:cursor-pointer">
         <DropdownMenuGroup>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuItem className="flex flex-row gap-x-3">
-            <div className="h-10 w-10 rounded-full bg-pink-500 flex items-center justify-center text-2xl text-white hover:text-white">
-              lk
+            <div className="h-10 w-10 rounded-full bg-pink-500 flex items-center justify-center text-xl text-white hover:text-white">
+              {profileDetails.firstname?.charAt(0).toUpperCase()}
+              {profileDetails.lastname?.charAt(0).toUpperCase()}
             </div>
             <div>
-              <p></p>
-              <p></p>
-              <p></p>
+              <p>{profileDetails.firstname}</p>
+              <p>{profileDetails.lastname}</p>
+              <p className="text-xs text-gray-500">{profileDetails.email}</p>
             </div>
           </DropdownMenuItem>
           <DropdownMenuItem>Billing</DropdownMenuItem>
@@ -39,7 +60,7 @@ export function NavProfileIcon() {
         <DropdownMenuSeparator />
         <DropdownMenuItem>GitHub</DropdownMenuItem>
         <DropdownMenuItem>Support</DropdownMenuItem>
-        <DropdownMenuItem disabled>API</DropdownMenuItem>
+        <DropdownMenuItem onClick={Logout}>LOGOUT</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

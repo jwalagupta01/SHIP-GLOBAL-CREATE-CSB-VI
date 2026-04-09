@@ -47,9 +47,9 @@ const Sidebar = () => {
           <li className="flex items-center" key={index}>
             <NavLink
               to={items.to}
-              className="w-full px-5 py-3 rounded-lg flex items-center gap-x-3 text-gray-500 font-medium"
+              className="w-full px-5 py-3 rounded-lg flex items-center justify-start gap-x-3 text-gray-500 font-medium"
             >
-              <span>{items.icon}</span>
+              <span className="">{items.icon}</span>
               <span
                 className={`whitespace-nowrap transition-all duration-300
                 ${
