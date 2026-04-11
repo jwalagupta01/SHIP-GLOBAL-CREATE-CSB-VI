@@ -2,15 +2,14 @@ import { useForm } from "react-hook-form";
 import { FaCheck } from "react-icons/fa";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { PrimaryBtn } from "./Element/PrimaryBtn";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useSelector } from "react-redux";
 
 interface geetingsProps {
   alldata: any;
   setAllData: any;
   steper: number;
   setSteper: any;
+  multiOrder?: boolean;
+  shiperRates: any;
 }
 
 function ShippingPartner({
@@ -18,9 +17,9 @@ function ShippingPartner({
   setAllData,
   steper,
   setSteper,
+  multiOrder,
+  shiperRates,
 }: geetingsProps) {
-  const token = useSelector((state: any) => state.auth.token);
-  const [shiperRates, setShiperRates] = useState<any>({});
   const shippingPartnerData = useForm({
     mode: "onChange",
   });
@@ -34,54 +33,7 @@ function ShippingPartner({
       console.error(error);
     }
   }
-
-  useEffect(() => {
-    if (!alldata.ShipmentData) return;
-    if (!alldata?.ShipmentData?.products) return;
-    const fetchState = async () => {
-      const products = alldata.ShipmentData.products || [];
-      console.log(products);
-
-      const vendorItems = products.map((item: any, index: number) => ({
-        vendor_order_item_id: `id-${Date.now()}-${index}`,
-        vendor_order_item_name: item.item_name,
-        vendor_order_item_sku: item.item_sku,
-        vendor_order_item_quantity: item.item_qty,
-        vendor_order_item_unit_price: item.item_unit_price,
-        vendor_order_item_hsn: item.item_hsn,
-        vendor_order_item_tax_rate: item.item_igst,
-      }));
-
-      try {
-        const res = await axios.post(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/orders/get-shipper-rates",
-          {
-            customer_shipping_postcode: alldata?.personalData?.pinCode,
-            customer_shipping_country_code: alldata?.personalData?.country,
-            package_weight: alldata?.ShipmentData?.dead_weight,
-            package_length: alldata?.ShipmentData?.pro_length,
-            package_breadth: alldata?.ShipmentData?.pro_breadth,
-            package_height: alldata?.ShipmentData?.pro_height,
-            csbv: 0,
-            vendor_order_item: vendorItems,
-            currency_code: alldata?.personalData?.country,
-            state_id: alldata?.personalData?.state,
-          },
-          {
-            headers: {
-              Authorization: `bearer ${token}`,
-            },
-          },
-        );
-        console.log(res?.data?.data);
-        setShiperRates(res?.data?.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchState();
-  }, [alldata, token]);
-
+  
   console.log(shiperRates);
 
   return (
@@ -108,26 +60,28 @@ function ShippingPartner({
           onSubmit={shippingPartnerData.handleSubmit(shippingPartDataSubmit)}
         >
           <div className="bg-white">
-            <div className="flex items-center justify-center gap-x-5 py-10">
-              <div className="flex flex-col border w-auto px-5 py-2 items-center rounded-lg bg-gray-100/50">
-                <p className="font-semibold text-gray-600">
-                  {shiperRates?.package_weight / 1000} KG
-                </p>
-                <p className="text-xs text-gray-600">Dead Weight</p>
+            {!multiOrder && (
+              <div className="flex items-center justify-center gap-x-5 py-10">
+                <div className="flex flex-col border w-auto px-5 py-2 items-center rounded-lg bg-gray-100/50">
+                  <p className="font-semibold text-gray-600">
+                    {shiperRates?.package_weight / 1000} KG
+                  </p>
+                  <p className="text-xs text-gray-600">Dead Weight</p>
+                </div>
+                <div className="flex flex-col border w-auto px-5 py-2 items-center rounded-lg bg-gray-100/50">
+                  <p className="font-semibold text-gray-600">
+                    {shiperRates?.volume_weight / 1000} KG
+                  </p>
+                  <p className="text-xs text-gray-600">Volumetric Weight</p>
+                </div>
+                <div className="flex flex-col border border-orange-400 text-orange-400 w-auto px-5 py-2 items-center rounded-lg bg-orange-400/20">
+                  <p className="font-semibold">
+                    {shiperRates?.bill_weight / 1000} KG
+                  </p>
+                  <p className="text-xs">Billed Weight</p>
+                </div>
               </div>
-              <div className="flex flex-col border w-auto px-5 py-2 items-center rounded-lg bg-gray-100/50">
-                <p className="font-semibold text-gray-600">
-                  {shiperRates?.volume_weight / 1000} KG
-                </p>
-                <p className="text-xs text-gray-600">Volumetric Weight</p>
-              </div>
-              <div className="flex flex-col border border-orange-400 text-orange-400 w-auto px-5 py-2 items-center rounded-lg bg-orange-400/20">
-                <p className="font-semibold">
-                  {shiperRates?.bill_weight / 1000} KG
-                </p>
-                <p className="text-xs">Billed Weight</p>
-              </div>
-            </div>
+            )}
             <p className="font-bold my-5">
               Showing {shiperRates.length} Results
             </p>
@@ -155,7 +109,7 @@ function ShippingPartner({
                 </div>
               </div>
             ))}
-            <div className="flex justify-end items-end pb-5">
+            <div className="flex justify-end items-end pb-5 my-2">
               <PrimaryBtn
                 text="Pay And Order"
                 variant="default"

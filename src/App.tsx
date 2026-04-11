@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { DashBoard } from "./pages/DashBoard";
 import { Multiorder } from "./pages/Multiorder";
 import { ToastContainer } from "react-toastify";
+import { OrderDetails } from "./pages/OrderDetails";
 
 const App = () => {
   const token = useSelector((state: any) => state.auth.token);
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/add-order" element={<Csbform />} />
           <Route path="/add-multibox" element={<Multiorder />} />
+          <Route path="/orders/view/5240307" element={<OrderDetails />} />
         </Routes>
       </div>
     </div>

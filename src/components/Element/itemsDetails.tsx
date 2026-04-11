@@ -1,8 +1,8 @@
 import { SHIPMENT_PRODUCT, SHIPMENT_SIZE } from "@/mock/arrayshipmentdetails";
-import { PrimaryInput, SecondryInput } from "./Element/primaryInput";
-import { DropDownComboBox } from "./Element/DropDownComboBox";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { useFieldArray } from "react-hook-form";
+import { DropDownComboBox } from "./DropDownComboBox";
+import { PrimaryInput, SecondryInput } from "./primaryInput";
 
 interface geetingsProps {
   ShipmentData: any;

@@ -4,12 +4,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { PrimaryBtn } from "./Element/PrimaryBtn";
+import { PrimaryBtn } from "./PrimaryBtn";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { FaPlus, FaTrash } from "react-icons/fa";
-import { PrimaryInput, SecondryInput } from "./Element/primaryInput";
+import { PrimaryInput, SecondryInput } from "./primaryInput";
 import { SHIPMENT_PRODUCT, SHIPMENT_SIZE } from "@/mock/arrayshipmentdetails";
-import { DropDownComboBox } from "./Element/DropDownComboBox";
+import { DropDownComboBox } from "./DropDownComboBox";
 import { useFieldArray, useForm } from "react-hook-form";
 import React, { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,9 +26,10 @@ interface geetingsProps {
   boxesDetails: any;
 }
 
-const IGST = ["0%", "0.25%", "3%", "5%", "12%", "18%", "28%"].map(
-  (percentage: string) => ({ percentage }),
-);
+const IGST = [0, 0.25, 3, 5, 12, 18, 28].map((percentage: number) => ({
+  percentage,
+  label: `${percentage}%`,
+}));
 
 export function MultiorderItemsDetails({
   boxesNo,
@@ -63,20 +64,6 @@ export function MultiorderItemsDetails({
   });
 
   const fieldName = `products`;
-
-  const watchProducts = multiOrderBoxesdetails.watch("products");
-  const totals = watchProducts?.reduce(
-    (acc: any, p: any) => {
-      const qty = Number(p.item_qty || 0);
-      const price = Number(p.item_unit_price || 0);
-
-      acc.totalQty += qty;
-      acc.totalAmount += qty * price;
-
-      return acc;
-    },
-    { totalQty: 0, totalAmount: 0 },
-  );
 
   const { fields, append, remove } = useFieldArray({
     control: multiOrderBoxesdetails.control,
@@ -200,7 +187,7 @@ export function MultiorderItemsDetails({
                 ))}
                 <DropDownComboBox
                   valueKey="percentage"
-                  labelKey="percentage"
+                  labelKey="label"
                   label="Select IGST"
                   list={IGST}
                   placeholder="Select IGST"
@@ -240,9 +227,9 @@ export function MultiorderItemsDetails({
               <FaPlus />
               <span>ADD ANOTHER PRODUCT</span>
             </p>
-            <p className="font-bold text-xl">
+            {/* <p className="font-bold text-xl">
               Total: {totals?.totalQty} Price | INR {totals?.totalAmount}
-            </p>
+            </p> */}
           </div>
           <div className="flex justify-between px-10">
             <div>

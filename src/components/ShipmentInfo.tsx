@@ -11,9 +11,9 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { MULTI_ORDER_SCHEMA } from "@/Schema/MultiOrderShema";
-import { OrderItemsDetails } from "./itemsDetails";
-import { MultiorderItemsDetails } from "./MultiOrderItemsDetails";
+import { MultiorderItemsDetails } from "./Element/MultiOrderItemsDetails";
 import { ShipmentinfoboxDe } from "./Element/ShipmentInfoForm";
+import { OrderItemsDetails } from "./Element/itemsDetails";
 
 interface geetingsProps {
   steper: number;
@@ -21,6 +21,7 @@ interface geetingsProps {
   alldata: any;
   setAllData: any;
   Multiorder: boolean;
+  getShiiperRates: any;
 }
 
 const ShipmentInfo = ({
@@ -29,6 +30,7 @@ const ShipmentInfo = ({
   alldata,
   setAllData,
   Multiorder,
+  getShiiperRates,
 }: geetingsProps) => {
   const [currency, setCurrency] = useState<string[]>([]);
   const [showMultiBoxProduct, setShowMultiBoxProduct] =
@@ -77,7 +79,7 @@ const ShipmentInfo = ({
   }, [boxesDetails]);
 
   // form On Submit
-  const formOnSubmit = (data: any): void => {
+  const formOnSubmit = (data: any) => {
     try {
       if (Multiorder) {
         if (boxesDetails.length !== box_number) {
@@ -107,6 +109,7 @@ const ShipmentInfo = ({
       console.error(error);
     }
   };
+
   // header change click
   function change_click() {
     try {
@@ -168,14 +171,7 @@ const ShipmentInfo = ({
         )}
       </div>
       {steper == 3 && (
-        <form
-          action=""
-          onSubmit={(e) => {
-            console.log("PARENT FORM SUBMIT");
-            ShipmentData.handleSubmit(formOnSubmit)(e);
-          }}
-          className="bg-white "
-        >
+        <form action="" className="bg-white ">
           <div className="grid grid-cols-3 gap-x-2 py-3 gap-y-2">
             <PrimaryDate
               label="Invoice Date"
@@ -236,31 +232,51 @@ const ShipmentInfo = ({
             setCurrentBoxIndex={setCurrentBoxIndex}
             setShowMultiBoxProduct={setShowMultiBoxProduct}
           />
-          {msgShow && (
+          {msgShow && box_number == boxesDetails && (
             <p className="text-xs text-red-500">
               Number of Boxes should be equal to number Box count
             </p>
           )}
           <div className="flex justify-end py-5">
-            {!isEqual &&
-            watchValue.invoice_number !== "" &&
-            boxesDetails.length <= box_number ? (
-              <button
-                disabled={box_number >= 25}
-                type="button"
-                className="flex items-center gap-x-2 border px-3 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-600 cursor-pointer disabled:opacity-80"
-                onClick={() => setShowMultiBoxProduct(true)}
-              >
-                <FaPlus />
-                {box_number == 1 ? "Add Box" : "Add Boxes"}
-              </button>
+            {Multiorder ? (
+              <>
+                {!isEqual &&
+                watchValue.invoice_number !== "" &&
+                boxesDetails.length <= box_number ? (
+                  <button
+                    disabled={box_number >= 25}
+                    type="button"
+                    className="flex items-center gap-x-2 border px-3 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-600 cursor-pointer disabled:opacity-80"
+                    onClick={() => setShowMultiBoxProduct(true)}
+                  >
+                    <FaPlus />
+                    {box_number == 1 ? "Add Box" : "Add Boxes"}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      ShipmentData.handleSubmit(formOnSubmit)(e);
+
+                      console.log("multiorder true button form submit");
+                    }}
+                    className="flex items-center gap-x-2 border px-3 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-600 cursor-pointer"
+                  >
+                    {boxesDetails.length >= 1 ? "Continue" : "Add Box"}
+                  </button>
+                )}
+              </>
             ) : (
               <button
                 type="button"
-                onClick={(e) => ShipmentData.handleSubmit(formOnSubmit)(e)}
+                onClick={(e) => {
+                  ShipmentData.handleSubmit(formOnSubmit)(e);
+                  getShiiperRates();
+                  console.log("multiorder false button form submit");
+                }}
                 className="flex items-center gap-x-2 border px-3 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-600 cursor-pointer"
               >
-                {boxesDetails.length >= 1 ? "Continue" : "Add Box"}
+                Continue
               </button>
             )}
           </div>

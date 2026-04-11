@@ -22,6 +22,7 @@ interface geetingsProps {
   label: string;
   labelDisabled?: boolean;
   container?: HTMLElement | null;
+  formatLabel?: (item: any) => string;
 }
 
 export function DropDownComboBox({
@@ -34,6 +35,7 @@ export function DropDownComboBox({
   label,
   labelDisabled,
   container,
+  formatLabel,
 }: geetingsProps) {
   const {
     control,
@@ -41,6 +43,10 @@ export function DropDownComboBox({
   } = form;
 
   const error = get(errors, name);
+
+  const getSelectedItem = (value: any) => {
+    return list?.find((item: any) => item[valueKey] === value);
+  };
 
   return (
     <div>
@@ -67,6 +73,13 @@ export function DropDownComboBox({
               className="rounded-md h-11"
               readOnly
               style={{ cursor: "pointer" }}
+              value={
+                field.value
+                  ? formatLabel
+                    ? formatLabel(getSelectedItem(field.value))
+                    : getSelectedItem(field.value)?.[labelKey]
+                  : ""
+              }
             />
             <ComboboxContent className={`cursor-pointer`} container={container}>
               <ComboboxEmpty className={`cursor-pointer`}>
@@ -79,7 +92,7 @@ export function DropDownComboBox({
                     value={item[valueKey]}
                     className="cursor-pointer !!z-[9999] **:cursor-pointer"
                   >
-                    {item[labelKey]}
+                    {formatLabel ? formatLabel(item) : item[labelKey]}
                   </ComboboxItem>
                 ))}
               </ComboboxList>

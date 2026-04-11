@@ -8,7 +8,7 @@ const ProductSchema = z.object({
   }),
   item_qty: z.coerce.number().min(1, "Quantity must not be Zero"),
   item_unit_price: z.coerce.number().min(1, "Unit Price must not be Zero"),
-  item_igst: z.string().nonempty("Select IGST"),
+  item_igst: z.coerce.number().min(1, "Select IGST"),
 });
 
 export const BOXES_DETAILS = z.object({
