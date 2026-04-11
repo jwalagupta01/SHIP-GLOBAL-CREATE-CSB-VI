@@ -1,6 +1,5 @@
 import { PiMapPinFill } from "react-icons/pi";
 import { LuBox, LuWeight } from "react-icons/lu";
-// import { orderDetails } from "@/mock/OrderDetails";
 import { BsTruck } from "react-icons/bs";
 
 interface proDetacardprops {
