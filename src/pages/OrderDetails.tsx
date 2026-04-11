@@ -4,6 +4,7 @@ import ViewOrderDetails from "@/components/Element/ViewOrderDetails";
 import { LuChevronRight } from "react-icons/lu";
 import { orderDetails } from "@/mock/OrderDetails";
 import { TbReceiptRupeeFilled } from "react-icons/tb";
+import { BsCheckCircleFill } from "react-icons/bs";
 
 export function OrderDetails() {
   const productDetails = orderDetails.items;
@@ -31,7 +32,7 @@ export function OrderDetails() {
           />
         </div>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 flex gap-x-3 ">
         <div className="w-2/3 flex flex-col gap-y-8">
           <ViewOrderDetails />
           <div className="bg-white py-8 px-4 rounded-lg flex flex-col gap-y-4">
@@ -47,9 +48,80 @@ export function OrderDetails() {
             />
           </div>
         </div>
-        <div className="w-1/3">
-          <div></div>
-          <div></div>
+        <div className="w-1/3 flex flex-col gap-y-5">
+          <div className="bg-orange-400/15 pt-4 rounded-lg flex flex-col gap-y-3">
+            <p className="px-3 text-orange-400/70 font-semibold">Summary</p>
+            <hr className="border border-orange-400/20" />
+            <div className="flex items-center justify-between px-4">
+              <span className="flex flex-col gap-y-3">
+                <p>Logistic Fee</p>
+                <p>Global Disruption Adjustment</p>
+                <p>GST</p>
+              </span>
+              <span className="flex flex-col gap-y-3">
+                <p>Rs. 1956.00</p>
+                <p>Rs. 150.00</p>
+                <p>Rs. 379.08</p>
+              </span>
+            </div>
+            <div className="flex items-center justify-between *:font-semibold bg-orange-400/30 px-4 py-3 rounded-b-lg">
+              <p>Total</p>
+              <p>Rs. 2485.08</p>
+            </div>
+          </div>
+          <div className="bg-white *:font-semibold rounded-lg px-4 py-6 flex flex-col gap-y-3">
+            <p className="">Activity</p>
+            <div>
+              <span className="flex gap-x-4 items-center text-gray-500">
+                <p className="border rounded-full p-1 border-green-400 text-green-400">
+                  <BsCheckCircleFill />
+                </p>
+                <p>Order Created</p>
+              </span>
+              <div className="border-l-2 border-dotted border-green-500 h-10 ms-3"></div>
+              <span className="flex gap-x-4 items-center text-gray-500">
+                <p className="border rounded-full p-1 border-green-500 text-green-500">
+                  <BsCheckCircleFill />
+                </p>
+                <p>Pickup Scheduled</p>
+              </span>
+              <div className="border-l-2 border-dotted h-10 ms-3 border-green-500"></div>
+              <span className="flex gap-x-4 items-center text-gray-500">
+                <p className="border rounded-full p-1">
+                  <BsCheckCircleFill />
+                </p>
+                <p>Received at Hub</p>
+              </span>
+              <div className="border-l-2 border-dotted h-10 ms-3"></div>
+              <span className="flex gap-x-4 items-center text-gray-500">
+                <p className="border rounded-full p-1">
+                  <BsCheckCircleFill />
+                </p>
+                <p>Flight Channel</p>
+              </span>
+              <div className="border-l-2 border-dotted h-10 ms-3"></div>
+              <span className="flex gap-x-4 items-center text-gray-500">
+                <p className="border rounded-full p-1">
+                  <BsCheckCircleFill />
+                </p>
+                <p>Shipment in Transit</p>
+              </span>
+              <div className="border-l-2 border-dotted h-10 ms-3"></div>
+              <span className="flex gap-x-4 items-center text-gray-500">
+                <p className="border rounded-full p-1">
+                  <BsCheckCircleFill />
+                </p>
+                <p>Last Mile</p>
+              </span>
+              <div className="border-l-2 border-dotted h-10 ms-3"></div>
+              <span className="flex gap-x-4 items-center text-gray-500">
+                <p className="border rounded-full p-1">
+                  <BsCheckCircleFill />
+                </p>
+                <p>Closed</p>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
