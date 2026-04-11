@@ -79,7 +79,6 @@ export function DashBoard() {
       className: "bg-green-300/30 text-green-600",
     },
   ];
-  
   const colors = [
     "border-orange-400",
     "border-violet-400",

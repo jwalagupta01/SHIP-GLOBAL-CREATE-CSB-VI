@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/table";
 
 interface geetingsProps {
-  productDetails: any;
+  orderDetails: any;
   currency: string;
 }
 
 export function OrderDetailsProductDetails({
-  productDetails,
+  orderDetails,
   currency,
 }: geetingsProps) {
   return (
@@ -37,7 +37,7 @@ export function OrderDetailsProductDetails({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {productDetails.map((item: any, index: number) => (
+        {(orderDetails?.items || []).map((item: any, index: number) => (
           <TableRow
             key={index}
             className="border-y border-l border-gray-300 h-15"
@@ -74,7 +74,7 @@ export function OrderDetailsProductDetails({
           </TableCell>
           <TableCell className="font-bold text-lg">
             {currency}{" "}
-            {productDetails.reduce((acc: number, item: any) => {
+            {(orderDetails?.items || []).reduce((acc: number, item: any) => {
               return (
                 acc +
                 item.vendor_order_item_quantity *

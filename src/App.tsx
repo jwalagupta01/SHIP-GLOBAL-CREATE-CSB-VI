@@ -32,7 +32,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/add-order" element={<Csbform />} />
           <Route path="/add-multibox" element={<Multiorder />} />
-          <Route path="/orders/view/5240307" element={<OrderDetails />} />
+          <Route path="/orders/view/:OrderId" element={<OrderDetails />} />
         </Routes>
       </div>
     </div>
