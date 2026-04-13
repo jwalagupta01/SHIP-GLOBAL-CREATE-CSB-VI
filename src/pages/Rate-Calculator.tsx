@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import MesureSideDetails from "@/components/Element/MesureSideDetails";
 
 export default function RateCalculator() {
   const token = useSelector((state: any) => state.auth.token);
@@ -63,11 +64,11 @@ export default function RateCalculator() {
   return (
     <div className="pt-16 w-full h-full px-2 flex flex-col bg-gray-100 ">
       <p className="text-3xl font-semibold mt-2 h-[6%]">Rate Calculator</p>
-      <div className="h-[92%] overflow-scroll">
+      <div className="h-[92%] overflow-scroll flex flex-row gap-x-3">
         <form
           onSubmit={rateCalculatorform.handleSubmit(ratecalcFormSubmit)}
           action=""
-          className="w-2/3 min-h-full bg-white px-4 py-3 rounded-lg flex flex-col gap-y-4"
+          className="w-2/3 min-h-full overflow-scroll bg-white px-4 py-3 rounded-lg flex flex-col gap-y-4"
         >
           <div className="flex flex-row gap-x-4 *:w-[50%]">
             <BasicComboBox
@@ -134,7 +135,11 @@ export default function RateCalculator() {
             </div>
           )}
         </form>
-        <div className="w-1/3"></div>
+        <div className="w-1/3">
+          <div className="bg-white rounded-lg px-2 py-2">
+            <MesureSideDetails />
+          </div>
+        </div>
       </div>
     </div>
   );

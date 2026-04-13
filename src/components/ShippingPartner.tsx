@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { FaCheck } from "react-icons/fa";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { PrimaryBtn } from "./Element/PrimaryBtn";
-import { Calculator } from "lucide-react";
 
 interface geetingsProps {
   alldata: any;
@@ -21,6 +20,7 @@ function ShippingPartner({
   setSteper,
   multiOrder,
   shiperRates,
+  calculator,
 }: geetingsProps) {
   const shippingPartnerData = useForm({
     mode: "onChange",
@@ -38,7 +38,7 @@ function ShippingPartner({
 
   return (
     <div className="border border-gray-400 rounded w-full h-auto mb-5">
-      {!Calculator && (
+      {!calculator && (
         <div className="flex items-center justify-between h-13 border-b border-gray-400 bg-blue-50 px-4">
           <div className="flex items-center gap-x-2">
             {Object.keys(alldata?.shippingPartner || {}).length > 0 ? (
@@ -85,13 +85,13 @@ function ShippingPartner({
               </div>
             )}
             <p className="font-bold my-5 px-4">
-              Showing {shiperRates?.length} Results
+              Showing {shiperRates?.rate?.length || 0} Results
             </p>
             <div className="border border-gray-400 rounded flex justify-between items-center px-8 mx-4 py-3 bg-gray-100">
               <p className="w-[25%]">Courier Partner</p>
               <p>Delivery Time</p>
               <p>Shipment Rate</p>
-              {!Calculator && <p>Select</p>}
+              {!calculator && <p>Select</p>}
             </div>
             {shiperRates?.rate?.map((items: any, index: number) => (
               <div
@@ -105,7 +105,7 @@ function ShippingPartner({
                   <p className="w-[25%]">{items.display_name}</p>
                   <p>{items.transit_time}</p>
                   <p>Rs. {items.rate}</p>
-                  {!Calculator && (
+                  {!calculator && (
                     <span className="text-2xl">
                       <IoIosCheckmarkCircle />
                     </span>
@@ -113,7 +113,7 @@ function ShippingPartner({
                 </div>
               </div>
             ))}
-            {!Calculator && (
+            {!calculator && (
               <div className="flex justify-end items-end pb-5 mx-4">
                 <PrimaryBtn
                   text="Pay And Order"

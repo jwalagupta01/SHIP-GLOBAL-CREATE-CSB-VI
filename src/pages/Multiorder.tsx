@@ -1,3 +1,4 @@
+import MesureSideDetails from "@/components/Element/MesureSideDetails";
 import PersonalDeatails from "@/components/PersonalDeatails";
 import SearchCustomer from "@/components/SearchCustomer";
 import ShipmentInfo from "@/components/ShipmentInfo";
@@ -78,7 +79,7 @@ export function Multiorder() {
           <p className="text-black font-semibold">Create CSB-IV Order</p>
         </div>
       </div>
-      <div className="h-[92%]">
+      <div className="h-[92%] flex flex-row gap-x-3">
         <div className="w-2/3 flex flex-col gap-y-3">
           <SearchCustomer
             alldata={alldata}
@@ -109,7 +110,11 @@ export function Multiorder() {
             shiperRates={shiperRates}
           />
         </div>
-        <div></div>
+        <div className="w-1/3">
+          <div className="bg-white rounded-lg px-2 py-2">
+            <MesureSideDetails />
+          </div>
+        </div>
       </div>
     </div>
   );

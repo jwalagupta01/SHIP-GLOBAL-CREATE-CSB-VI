@@ -8,6 +8,7 @@ import ShippingPartner from "@/components/ShippingPartner";
 import { addOrderDetails } from "@/Redux/HomeData.ts/AddOder";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import MesureSideDetails from "@/components/Element/MesureSideDetails";
 
 const Csbform = () => {
   const [steper, setSteper] = useState<number>(1);
@@ -81,7 +82,7 @@ const Csbform = () => {
           <p>Create CSB-IV Order</p>
         </div>
       </div>
-      <div className="h-[92%]">
+      <div className="h-[92%] flex flex-row gap-x-3">
         <div className="mt-4 flex flex-col gap-y-3 overflow-scroll h-full w-2/3">
           <SearchCustomer
             steper={steper}
@@ -111,7 +112,11 @@ const Csbform = () => {
             shiperRates={shiperRates}
           />
         </div>
-        <div></div>
+        <div className="w-1/3">
+          <div>
+            <MesureSideDetails />
+          </div>
+        </div>
       </div>
     </div>
   );
