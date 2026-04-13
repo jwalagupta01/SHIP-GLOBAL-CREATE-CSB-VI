@@ -1,4 +1,4 @@
-import { OrderDetailsProductDetails } from "@/components/Element/orderdetailsProducttable";
+import { OrderDetailsProductDetails } from "@/components/Element/orderDetailsProductTable";
 import { PrimaryBtn } from "@/components/Element/PrimaryBtn";
 import ViewOrderDetails from "@/components/Element/ViewOrderDetails";
 import { LuChevronRight } from "react-icons/lu";

@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { FaCheck } from "react-icons/fa";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { PrimaryBtn } from "./Element/PrimaryBtn";
+import { Calculator } from "lucide-react";
 
 interface geetingsProps {
   alldata: any;
@@ -10,6 +11,7 @@ interface geetingsProps {
   setSteper: any;
   multiOrder?: boolean;
   shiperRates: any;
+  calculator?: boolean;
 }
 
 function ShippingPartner({
@@ -34,26 +36,26 @@ function ShippingPartner({
     }
   }
 
-  console.log(shiperRates);
-
   return (
     <div className="border border-gray-400 rounded w-full h-auto mb-5">
-      <div className="flex items-center justify-between h-13 border-b border-gray-400 bg-blue-50 px-4">
-        <div className="flex items-center gap-x-2">
-          {Object.keys(alldata?.shippingPartner || {}).length > 0 ? (
-            <p className="bg-green-600 px-1 py-1 rounded text-white">
-              <FaCheck />
-            </p>
-          ) : (
-            <p
-              className={`px-2 rounded ${steper !== 4 ? "bg-gray-300 text-black" : "bg-black text-white"}`}
-            >
-              4
-            </p>
-          )}
-          <p className="font-semibold text-lg">Select Shipping Partner</p>
+      {!Calculator && (
+        <div className="flex items-center justify-between h-13 border-b border-gray-400 bg-blue-50 px-4">
+          <div className="flex items-center gap-x-2">
+            {Object.keys(alldata?.shippingPartner || {}).length > 0 ? (
+              <p className="bg-green-600 px-1 py-1 rounded text-white">
+                <FaCheck />
+              </p>
+            ) : (
+              <p
+                className={`px-2 rounded ${steper !== 4 ? "bg-gray-300 text-black" : "bg-black text-white"}`}
+              >
+                4
+              </p>
+            )}
+            <p className="font-semibold text-lg">Select Shipping Partner</p>
+          </div>
         </div>
-      </div>
+      )}
       {steper == 4 && (
         <form
           action=""
@@ -89,7 +91,7 @@ function ShippingPartner({
               <p className="w-[25%]">Courier Partner</p>
               <p>Delivery Time</p>
               <p>Shipment Rate</p>
-              <p>Select</p>
+              {!Calculator && <p>Select</p>}
             </div>
             {shiperRates?.rate?.map((items: any, index: number) => (
               <div
@@ -103,19 +105,23 @@ function ShippingPartner({
                   <p className="w-[25%]">{items.display_name}</p>
                   <p>{items.transit_time}</p>
                   <p>Rs. {items.rate}</p>
-                  <span className="text-2xl">
-                    <IoIosCheckmarkCircle />
-                  </span>
+                  {!Calculator && (
+                    <span className="text-2xl">
+                      <IoIosCheckmarkCircle />
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
-            <div className="flex justify-end items-end pb-5 mx-4">
-              <PrimaryBtn
-                text="Pay And Order"
-                variant="default"
-                className="bg-blue-800 hover:bg-blue-600 px-6 py-5"
-              />
-            </div>
+            {!Calculator && (
+              <div className="flex justify-end items-end pb-5 mx-4">
+                <PrimaryBtn
+                  text="Pay And Order"
+                  variant="default"
+                  className="bg-blue-800 hover:bg-blue-600 px-6 py-5"
+                />
+              </div>
+            )}
           </div>
         </form>
       )}

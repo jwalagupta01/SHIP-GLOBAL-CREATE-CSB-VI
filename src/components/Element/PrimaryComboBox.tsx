@@ -12,23 +12,23 @@ import {
   ComboboxTrigger,
 } from "@/components/ui/combobox";
 
-interface greetingCombobox<T> {
+interface greetingCombobox {
   id: string;
-  list: T[];
+  list: any;
   label: string;
   placeholder: string;
   form: any;
   name: string;
 }
 
-export const UserComboBox = <T,>({
+export const UserComboBox = ({
   id,
   list,
   label,
   placeholder,
   form,
   name,
-}: greetingCombobox<T>) => {
+}: greetingCombobox) => {
   const {
     control,
     formState: { errors },
