@@ -22,7 +22,6 @@ interface geetingsProps {
   label: string;
   labelDisabled?: boolean;
   container?: HTMLElement | null;
-  formatLabel?: (item: any) => string;
 }
 
 export function DropDownComboBox({
@@ -35,7 +34,6 @@ export function DropDownComboBox({
   label,
   labelDisabled,
   container,
-  formatLabel,
 }: geetingsProps) {
   const {
     control,
@@ -75,9 +73,7 @@ export function DropDownComboBox({
               style={{ cursor: "pointer" }}
               value={
                 field.value
-                  ? formatLabel
-                    ? formatLabel(getSelectedItem(field.value))
-                    : getSelectedItem(field.value)?.[labelKey]
+                  ? (getSelectedItem(field.value)?.[labelKey] ?? "")
                   : ""
               }
             />
@@ -92,7 +88,7 @@ export function DropDownComboBox({
                     value={item[valueKey]}
                     className="cursor-pointer !!z-[9999] **:cursor-pointer"
                   >
-                    {formatLabel ? formatLabel(item) : item[labelKey]}
+                    {item[labelKey]}
                   </ComboboxItem>
                 ))}
               </ComboboxList>

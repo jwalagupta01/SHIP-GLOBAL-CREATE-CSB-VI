@@ -26,10 +26,11 @@ interface geetingsProps {
   boxesDetails: any;
 }
 
-const IGST = [0, 0.25, 3, 5, 12, 18, 28].map((percentage: number) => ({
-  percentage,
-  label: `${percentage}%`,
-}));
+const IGST = ["0%", "0.25%", "3%", "5%", "12%", "18%", "28%"].map(
+  (percentage: string) => ({
+    percentage,
+  }),
+);
 
 export function MultiorderItemsDetails({
   boxesNo,
@@ -187,7 +188,7 @@ export function MultiorderItemsDetails({
                 ))}
                 <DropDownComboBox
                   valueKey="percentage"
-                  labelKey="label"
+                  labelKey="percentage"
                   label="Select IGST"
                   list={IGST}
                   placeholder="Select IGST"

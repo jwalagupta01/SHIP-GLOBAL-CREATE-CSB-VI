@@ -70,7 +70,7 @@ const PersonalDeatails = ({
     const fetchCountry = async () => {
       try {
         const res = await axios.get(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/location/countries",
+          "https://qa3.franchise.backend.shipgl.in/api/v1/location/countries",
         );
         setCountry(res?.data?.data?.countries || []);
       } catch (error) {
@@ -87,7 +87,7 @@ const PersonalDeatails = ({
     const fetchState = async () => {
       try {
         const res = await axios.post(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/location/statesv2",
+          "https://qa3.franchise.backend.shipgl.in/api/v1/location/statesv2",
           { state_country_code: watchvalue.country },
         );
         setState(res?.data?.data?.states);
@@ -107,7 +107,7 @@ const PersonalDeatails = ({
     const fetchState = async () => {
       try {
         const res = await axios.post(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/location/statesv2",
+          "https://qa3.franchise.backend.shipgl.in/api/v1/location/statesv2",
           { state_country_code: watchvalue.billing_Country },
         );
         setBillingState(res?.data?.data?.states);

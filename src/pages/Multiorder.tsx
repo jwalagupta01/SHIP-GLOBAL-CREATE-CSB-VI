@@ -14,17 +14,18 @@ export function Multiorder() {
   const dispatch = useDispatch();
   const [shiperRates, setShiperRates] = useState<any>({});
   const token = useSelector((state: any) => state.auth.token);
+
   useEffect(() => {
     dispatch(addMultiOrderDetails(alldata));
   }, [alldata]);
 
   async function getShiiperRates(data: any) {
     if (!data?.ShipmentData) return;
-    console.log("this run");
 
     try {
-      if (!alldata?.ShipmentData?.Boxes) return;
-      const MultiVendorBoxes = alldata?.ShipmentData?.Boxes?.map(
+      if (!data?.ShipmentData?.Boxes) return;
+      console.log("this run");
+      const MultiVendorBoxes = data?.ShipmentData?.Boxes?.map(
         (box: any, boxIndex: number) => ({
           package_weight: box.dead_weight,
           package_length: box.pro_length,
@@ -37,23 +38,23 @@ export function Multiorder() {
             vendor_order_item_hsn: item.item_hsn,
             vendor_order_item_quantity: item.item_qty,
             vendor_order_item_unit_price: item.item_unit_price,
-            vendor_order_item_tax_rate: item.item_igst,
+            vendor_order_item_tax_rate: String(item.item_igst).replace("%", ""),
           })),
         }),
       );
 
       const MultiOrderPayLoad = {
-        customer_shipping_country_code: alldata?.personalData?.country,
-        customer_shipping_postcode: alldata?.personalData?.pinCode,
-        total_boxes: alldata?.ShipmentData?.box_number,
+        customer_shipping_country_code: data?.personalData?.country,
+        customer_shipping_postcode: data?.personalData?.pinCode,
+        total_boxes: data?.ShipmentData?.box_number,
         csbv: 0,
-        currency_code: alldata?.ShipmentData?.invoice_currency,
-        state_id: alldata?.personalData?.state,
+        currency_code: data?.ShipmentData?.invoice_currency,
+        state_id: data?.personalData?.state,
         vendor_box: MultiVendorBoxes,
       };
 
       let res = await axios.post(
-        "https://qa2.franchise.backend.shipgl.in/api/v1/multibox-orders/get-shipper",
+        "https://qa3.franchise.backend.shipgl.in/api/v1/multibox-orders/get-shipper",
         MultiOrderPayLoad,
         { headers: { Authorization: `Bearer ${token}` } },
       );

@@ -31,7 +31,7 @@ export function OrderDetails() {
     async function fetchOrderdetails() {
       try {
         const res = await axios.post(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/orders/get-order-details",
+          "https://qa3.franchise.backend.shipgl.in/api/v1/orders/get-order-details",
           { order_id: OrderId },
           { headers: { Authorization: `Bearer ${token}` } },
         );

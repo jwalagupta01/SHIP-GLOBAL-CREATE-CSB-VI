@@ -49,7 +49,7 @@ const Navbar = () => {
     const fetchBalance = async () => {
       try {
         const res = await axios.get(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/wallet/balance",
+          "https://qa3.franchise.backend.shipgl.in/api/v1/wallet/balance",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ const Navbar = () => {
     async function profileDetails() {
       try {
         const res = await axios.get(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/auth/get-profile",
+          "https://qa3.franchise.backend.shipgl.in/api/v1/auth/get-profile",
           {
             headers: {
               Authorization: `Bearer ${token}`,

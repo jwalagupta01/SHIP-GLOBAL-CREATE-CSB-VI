@@ -24,7 +24,7 @@ export function Login() {
     const formsubmitApi = async () => {
       try {
         const res = await axios.post(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/auth/login",
+          "https://qa3.franchise.backend.shipgl.in/api/v1/auth/login",
           { email: data.email, password: data.password },
         );
         setMessage("Login SuccessFully");

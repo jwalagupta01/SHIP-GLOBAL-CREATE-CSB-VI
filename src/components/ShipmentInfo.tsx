@@ -97,14 +97,24 @@ const ShipmentInfo = ({
           ShipmentData: finalData,
         }));
 
+        getShiiperRates({ ...alldata, ShipmentData: finalData });
         setSteper(4);
       } else {
+        const finalData = {
+          ...data,
+          Boxes: boxesDetails,
+        };
         setAllData((prev: any) => ({
           ...prev,
-          ShipmentData: data,
+          ShipmentData: finalData,
         }));
+        getShiiperRates({ ...alldata, ShipmentData: finalData });
         setSteper(4);
       }
+
+      // if (alldata?.ShipmentData) {
+      //   ShipmentData();
+      // }
     } catch (error) {
       console.error(error);
     }
@@ -129,7 +139,7 @@ const ShipmentInfo = ({
     async function FetchCurrency() {
       try {
         const res = await axios.get(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/currency/list",
+          "https://qa3.franchise.backend.shipgl.in/api/v1/currency/list",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -271,7 +281,6 @@ const ShipmentInfo = ({
                 type="button"
                 onClick={(e) => {
                   ShipmentData.handleSubmit(formOnSubmit)(e);
-                  getShiiperRates();
                   console.log("multiorder false button form submit");
                 }}
                 className="flex items-center gap-x-2 border px-3 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-600 cursor-pointer"

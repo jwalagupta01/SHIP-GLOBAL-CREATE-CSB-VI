@@ -131,7 +131,7 @@ export function DashBoard() {
       try {
         const payload = getDateRange(selectedDate);
         const res = await axios.post(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/dashboard",
+          "https://qa3.franchise.backend.shipgl.in/api/v1/dashboard",
           { payload },
           {
             headers: {
@@ -152,7 +152,7 @@ export function DashBoard() {
     async function WalletActive() {
       try {
         const res = await axios.post(
-          "https://qa2.franchise.backend.shipgl.in/api/v1/wallet",
+          "https://qa3.franchise.backend.shipgl.in/api/v1/wallet",
           {},
           {
             headers: {

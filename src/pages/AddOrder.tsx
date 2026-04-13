@@ -19,37 +19,37 @@ const Csbform = () => {
 
   console.log(alldata);
   async function getShiperRates(data: any) {
-    console.log(alldata);
     if (!data?.ShipmentData) return;
     try {
-      if (!alldata?.ShipmentData?.Boxes) return;
-      const singleVendorItems = alldata?.ShipmentData?.products?.map(
+      const singleVendorItems = data?.ShipmentData?.products?.map(
         (item: any, index: number) => ({
           vendor_order_item_id: `id-${Date.now()}-${index}`,
           vendor_order_item_name: item.item_name,
           vendor_order_item_sku: item.item_sku,
           vendor_order_item_quantity: item.item_qty,
           vendor_order_item_unit_price: item.item_unit_price,
-          vendor_order_item_hsn: item.item_hsn,
-          vendor_order_item_tax_rate: item.item_igst,
+          vendor_order_item_hsn: String(item.item_hsn),
+          vendor_order_item_tax_rate: String(item.item_igst).replace("%", ""),
         }),
       );
 
       const singleOrderPayLoad = {
-        customer_shipping_postcode: alldata?.personalData?.pinCode,
-        customer_shipping_country_code: alldata?.personalData?.country,
-        package_weight: alldata?.ShipmentData?.dead_weight,
-        package_length: alldata?.ShipmentData?.pro_length,
-        package_breadth: alldata?.ShipmentData?.pro_breadth,
-        package_height: alldata?.ShipmentData?.pro_height,
+        customer_shipping_postcode: data?.personalData?.pinCode,
+        customer_shipping_country_code: data?.personalData?.country,
+        package_weight: data?.ShipmentData?.dead_weight,
+        package_length: data?.ShipmentData?.pro_length,
+        package_breadth: data?.ShipmentData?.pro_breadth,
+        package_height: data?.ShipmentData?.pro_height,
         csbv: 0,
         vendor_order_item: singleVendorItems,
-        currency_code: alldata?.personalData?.country,
-        state_id: alldata?.personalData?.state,
+        currency_code: data?.ShipmentData?.invoice_currency,
+        state_id: data?.personalData?.state,
       };
 
+      console.log("payload →", singleOrderPayLoad);
+
       let res = await axios.post(
-        "https://qa2.franchise.backend.shipgl.in/api/v1/multibox-orders/get-shipper",
+        "https://qa3.franchise.backend.shipgl.in/api/v1/orders/get-shipper-rates",
         singleOrderPayLoad,
         { headers: { Authorization: `Bearer ${token}` } },
       );
