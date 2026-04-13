@@ -9,6 +9,7 @@ import { DashBoard } from "./pages/DashBoard";
 import { Multiorder } from "./pages/Multiorder";
 import { ToastContainer } from "react-toastify";
 import { OrderDetails } from "./pages/OrderDetails";
+import RateCalculator from "./pages/Rate-Calculator";
 
 const App = () => {
   const token = useSelector((state: any) => state.auth.token);
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/add-order" element={<Csbform />} />
           <Route path="/add-multibox" element={<Multiorder />} />
           <Route path="/orders/view/:OrderId" element={<OrderDetails />} />
+          <Route path="/calculator" element={<RateCalculator />} />
         </Routes>
       </div>
     </div>

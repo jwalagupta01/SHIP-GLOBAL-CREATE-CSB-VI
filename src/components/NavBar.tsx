@@ -26,7 +26,7 @@ const Navbar = () => {
     { label: "Add Order", to: "/add-order", icon: <LuPackagePlus /> },
     { label: "Add Multiorder", to: "/add-multibox", icon: <RxDashboard /> },
     { label: "Add CSB-v Order", to: "", icon: <LuPackagePlus /> },
-    { label: "Rate Calculator", to: "", icon: <LuPackagePlus /> },
+    { label: "Rate Calculator", to: "/calculator", icon: <LuPackagePlus /> },
   ];
 
   //  outSide the box click

@@ -58,6 +58,7 @@ const PersonalDeatails = ({
       setAllData((prev: any) => {
         const updated = { ...prev };
         delete updated?.personalData;
+        delete updated?.ShipmentData;
         return updated;
       });
     } catch (error) {

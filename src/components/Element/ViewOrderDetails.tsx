@@ -27,13 +27,6 @@ interface geetingsProps {
 }
 
 export default function ViewOrderDetails({ orderDetails }: geetingsProps) {
-  const volumeWeight =
-    (Number(orderDetails.package_length || 0) *
-      Number(orderDetails.package_breadth || 0) *
-      Number(orderDetails.package_height || 0)) /
-    5000;
-  const DeadWeight = Number(orderDetails.package_weight || 0) / 1000;
-  const billedWeight = Math.max(volumeWeight, DeadWeight);
   return (
     <div className="bg-white px-4 py-5 rounded-lg">
       <div className="flex">
@@ -79,19 +72,19 @@ export default function ViewOrderDetails({ orderDetails }: geetingsProps) {
       <div className="grid grid-cols-3 gap-4 mt-6">
         <ProDetacard
           icon={<LuWeight />}
-          weight={`${DeadWeight} kg`}
+          weight={`${orderDetails.package_weight / 1000} kg`}
           label="Dead Weight"
           className="bg-blue-300/30 text-blue-600"
         />
         <ProDetacard
           icon={<LuWeight />}
-          weight={`${volumeWeight} kg`}
+          weight={`${orderDetails.package_volume_weight / 1000} kg`}
           label="Volumetric Weight"
           className="bg-green-300/30 text-green-700"
         />
         <ProDetacard
           icon={<LuWeight />}
-          weight={`${billedWeight}Kg`}
+          weight={`${orderDetails.package_bill_weight / 1000}`}
           label="Billed Weight"
           className="bg-yellow-300/30 text-yellow-500"
         />

@@ -35,7 +35,7 @@ export function OrderDetails() {
           { order_id: OrderId },
           { headers: { Authorization: `Bearer ${token}` } },
         );
-        console.log(res?.data?.data);
+        // console.log(res?.data?.data);
         setOrderDetails(res?.data?.data);
       } catch (error) {
         console.error(error);

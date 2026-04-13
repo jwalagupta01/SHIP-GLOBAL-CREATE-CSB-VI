@@ -20,7 +20,7 @@ const Sidebar = () => {
     { to: "/add-order", label: "Orders", icon: <LuBox /> },
     { to: "/addTodo", label: "Multibox", icon: <RxDashboard /> },
     { to: "/alltodo", label: "Customers", icon: <FaUserFriends /> },
-    { to: "/userData", label: "Rate Calculator", icon: <BsCalculator /> },
+    { to: "/calculator", label: "Rate Calculator", icon: <BsCalculator /> },
     { to: "/userData", label: "Wallet", icon: <LuWallet /> },
     { to: "/userData", label: "Bulk Report", icon: <LuLayers3 /> },
     { to: "/userData", label: "Documents", icon: <IoDocumentsOutline /> },

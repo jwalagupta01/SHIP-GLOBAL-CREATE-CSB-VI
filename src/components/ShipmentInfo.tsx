@@ -267,8 +267,6 @@ const ShipmentInfo = ({
                     type="button"
                     onClick={(e) => {
                       ShipmentData.handleSubmit(formOnSubmit)(e);
-
-                      console.log("multiorder true button form submit");
                     }}
                     className="flex items-center gap-x-2 border px-3 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-600 cursor-pointer"
                   >
@@ -281,7 +279,6 @@ const ShipmentInfo = ({
                 type="button"
                 onClick={(e) => {
                   ShipmentData.handleSubmit(formOnSubmit)(e);
-                  console.log("multiorder false button form submit");
                 }}
                 className="flex items-center gap-x-2 border px-3 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-600 cursor-pointer"
               >

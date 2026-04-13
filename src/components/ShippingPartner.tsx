@@ -33,12 +33,12 @@ function ShippingPartner({
       console.error(error);
     }
   }
-  
+
   console.log(shiperRates);
 
   return (
-    <div className="border border-gray-400 rounded w-full h-auto *:px-4 mb-5">
-      <div className="flex items-center justify-between h-13 border-b border-gray-400 bg-blue-50">
+    <div className="border border-gray-400 rounded w-full h-auto mb-5">
+      <div className="flex items-center justify-between h-13 border-b border-gray-400 bg-blue-50 px-4">
         <div className="flex items-center gap-x-2">
           {Object.keys(alldata?.shippingPartner || {}).length > 0 ? (
             <p className="bg-green-600 px-1 py-1 rounded text-white">
@@ -82,34 +82,34 @@ function ShippingPartner({
                 </div>
               </div>
             )}
-            <p className="font-bold my-5">
-              Showing {shiperRates.length} Results
+            <p className="font-bold my-5 px-4">
+              Showing {shiperRates?.length} Results
             </p>
-            <div className="border border-gray-400 rounded flex justify-between items-center px-8 py-3 bg-gray-100">
-              <p>Courier Partner</p>
+            <div className="border border-gray-400 rounded flex justify-between items-center px-8 mx-4 py-3 bg-gray-100">
+              <p className="w-[25%]">Courier Partner</p>
               <p>Delivery Time</p>
               <p>Shipment Rate</p>
               <p>Select</p>
             </div>
             {shiperRates?.rate?.map((items: any, index: number) => (
               <div
-                className="border border-gray-400 my-4 rounded cursor-pointer"
+                className="border border-gray-400 my-4 rounded cursor-pointer mx-4 shadow-xl hover:shadow-xl/30 hover:scale-101 transition-all duration-500 ease-in-out"
                 key={index}
               >
                 <p className="bg-blue-200/50 text-red-500 px-5 text-sm">
                   Duties will be charged, if applicable.
                 </p>
-                <div className="flex justify-between items-center px-8 py-5">
-                  <p className="w-20 h-10">{items.display_name}</p>
+                <div className="flex justify-between items-center px-8 py-5 ">
+                  <p className="w-[25%]">{items.display_name}</p>
                   <p>{items.transit_time}</p>
                   <p>Rs. {items.rate}</p>
-                  <p>
+                  <span className="text-2xl">
                     <IoIosCheckmarkCircle />
-                  </p>
+                  </span>
                 </div>
               </div>
             ))}
-            <div className="flex justify-end items-end pb-5 my-2">
+            <div className="flex justify-end items-end pb-5 mx-4">
               <PrimaryBtn
                 text="Pay And Order"
                 variant="default"

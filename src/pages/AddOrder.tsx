@@ -70,45 +70,48 @@ const Csbform = () => {
   console.log(addOrderDetail);
 
   return (
-    <div className="border w-full h-full px-5 py-3 bg-gray-100 overflow-scroll pt-15">
-      <div className="">
-        <p className="text-3xl font-semibold">Create CSB-IV Order</p>
-        <div className="flex items-center gap-x-2 *:text-lg">
-          <p>Orders</p>
+    <div className="border w-full h-full px-5 pb-1 bg-gray-100 pt-15">
+      <div className="h-[6%]">
+        <p className="text-xl font-semibold">Create CSB-IV Order</p>
+        <div className="flex items-center gap-x-2 *:text-xs">
+          <p className="text-gray-500 cursor-pointer">Orders</p>
           <p>
             <IoIosArrowForward />
           </p>
           <p>Create CSB-IV Order</p>
         </div>
       </div>
-      <div className="mt-4 flex flex-col gap-y-3">
-        <SearchCustomer
-          steper={steper}
-          setSteper={setSteper}
-          alldata={alldata}
-          setAllData={setAllData}
-        />
-        <PersonalDeatails
-          alldata={alldata}
-          setAllData={setAllData}
-          steper={steper}
-          setSteper={setSteper}
-        />
-        <ShipmentInfo
-          steper={steper}
-          setSteper={setSteper}
-          alldata={alldata}
-          setAllData={setAllData}
-          Multiorder={false}
-          getShiiperRates={getShiperRates}
-        />
-        <ShippingPartner
-          steper={steper}
-          setSteper={setSteper}
-          alldata={alldata}
-          setAllData={setAllData}
-          shiperRates={shiperRates}
-        />
+      <div className="h-[92%]">
+        <div className="mt-4 flex flex-col gap-y-3 overflow-scroll h-full w-2/3">
+          <SearchCustomer
+            steper={steper}
+            setSteper={setSteper}
+            alldata={alldata}
+            setAllData={setAllData}
+          />
+          <PersonalDeatails
+            alldata={alldata}
+            setAllData={setAllData}
+            steper={steper}
+            setSteper={setSteper}
+          />
+          <ShipmentInfo
+            steper={steper}
+            setSteper={setSteper}
+            alldata={alldata}
+            setAllData={setAllData}
+            Multiorder={false}
+            getShiiperRates={getShiperRates}
+          />
+          <ShippingPartner
+            steper={steper}
+            setSteper={setSteper}
+            alldata={alldata}
+            setAllData={setAllData}
+            shiperRates={shiperRates}
+          />
+        </div>
+        <div></div>
       </div>
     </div>
   );
